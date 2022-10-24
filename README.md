@@ -91,7 +91,7 @@ config :time_manager, TimeManagerWeb.Endpoint,
 
 ### 4. Create a database to connect:
 ```bash
-$ docker-compose run web mix ecto.create
+$ docker-compose run api mix ecto.create
 ```
 
 ### 5. Lunch docker !
