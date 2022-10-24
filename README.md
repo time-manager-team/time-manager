@@ -3,6 +3,7 @@
 Time manager is a simple app to register work sessions.
 <p>&nbsp;</p>
 
+# API set-up
 ## <strong>Installation</strong>
 
 ### <strong> Linux (WSL2) installation : </strong>
