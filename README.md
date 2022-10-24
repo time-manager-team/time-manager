@@ -91,7 +91,7 @@ config :time_manager, TimeManagerWeb.Endpoint,
 
 ### 4. Create a database to connect:
 ```bash
-$ docker-compose run api mix ecto.create
+$ docker-compose run web mix ecto.create
 ```
 
 ### 5. Lunch docker !
@@ -99,6 +99,39 @@ $ docker-compose run api mix ecto.create
 $ docker-compose up
 ```
 
+<p>&nbsp;</p>
+
+## <strong>Connect to the admin</strong>
+
+
+### <strong>Build the docker images from the ground :</strong>
+
+### 1. First go to : http://localhost:5555/
+
+### 2. Connect using user and password from the docker-compose.yml file : 
+- PGADMIN_DEFAULT_EMAIL : admin@admin.org
+- PGADMIN_DEFAULT_PASSWORD : admin
+
+### 3. Add a new server : 
+- Click on "Add a new server" in the main page
+
+### 4. Fill the field in the server config "General" tab : 
+- Name : time_manager_db (your_db_name)
+
+### 5. After that, click on the "Connection" tab : 
+Here you need the IPAdress of your db container. 
+Go to docker desktop and copy the id of the container and run : 
+```bash
+$ docker inspect <id_the_db_container>
+```
+After retrieving the IPAdress of the container fill : 
+- Hostname/adress : <id_the_db_container>
+- Port : <your_container_db_port_in_the_dokcer-compose.yml>
+- Maintenance database : postgres
+- Username : <username_in_the_DATABASE_URL>
+- Password : <password_in_the_DATABASE_URL>
+
+You're now connected !!! Congrats
 
 <p>&nbsp;</p>
 

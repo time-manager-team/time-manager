@@ -1,12 +1,12 @@
-defmodule TimeManagerWeb do
+defmodule ApiWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use TimeManagerWeb, :controller
-      use TimeManagerWeb, :view
+      use ApiWeb, :controller
+      use ApiWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,19 +19,19 @@ defmodule TimeManagerWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: TimeManagerWeb
+      use Phoenix.Controller, namespace: ApiWeb
 
       import Plug.Conn
-      import TimeManagerWeb.Gettext
-      alias TimeManagerWeb.Router.Helpers, as: Routes
+      import ApiWeb.Gettext
+      alias ApiWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/time_manager_web/templates",
-        namespace: TimeManagerWeb
+        root: "lib/api_web/templates",
+        namespace: ApiWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -54,7 +54,7 @@ defmodule TimeManagerWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import TimeManagerWeb.Gettext
+      import ApiWeb.Gettext
     end
   end
 
@@ -63,9 +63,9 @@ defmodule TimeManagerWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import TimeManagerWeb.ErrorHelpers
-      import TimeManagerWeb.Gettext
-      alias TimeManagerWeb.Router.Helpers, as: Routes
+      import ApiWeb.ErrorHelpers
+      import ApiWeb.Gettext
+      alias ApiWeb.Router.Helpers, as: Routes
     end
   end
 

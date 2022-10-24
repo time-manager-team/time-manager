@@ -7,15 +7,15 @@
 # General application configuration
 import Config
 
-config :time_manager,
-  ecto_repos: [TimeManager.Repo]
+config :api,
+  ecto_repos: [Api.Repo]
 
 # Configures the endpoint
-config :time_manager, TimeManagerWeb.Endpoint,
+config :api, ApiWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: TimeManagerWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: TimeManager.PubSub,
-  live_view: [signing_salt: "rPoE/+dP"]
+  render_errors: [view: ApiWeb.ErrorView, accepts: ~w(json), layout: false],
+  pubsub_server: Api.PubSub,
+  live_view: [signing_salt: "TN0uvgvv"]
 
 # Configures Elixir's Logger
 config :logger, :console,
