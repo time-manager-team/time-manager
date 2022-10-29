@@ -56,7 +56,7 @@ $ mix archive.install hex phx_new
 
 ### 1. Once you have everything installed you're ready to generate new Phoenix project by executing:
 ```bash
-$ mix phx.new app_name
+$ mix phx.new api
 ```
 
 <p>&nbsp;</p>
@@ -71,7 +71,7 @@ You need to have install Docker Desktop and had link your Linux subsystem to doc
 
 ### 1. First we need to build our Docker image:
 ```bash
-$ docker-compose build
+$ docker-compose up --build
 ```
 ### 2. Go to config/dev.ex and change the content for your database by this:
 ```bash
@@ -92,10 +92,10 @@ config :time_manager, TimeManagerWeb.Endpoint,
 
 ### 4. Create a database to connect:
 ```bash
-$ docker-compose run web mix ecto.create
+$ docker-compose run api mix ecto.create
 ```
 
-### 5. Lunch docker !
+### 5. Launch docker !
 ```bash
 $ docker-compose up
 ```

@@ -3,6 +3,9 @@ defmodule ApiWeb.ErrorHelpers do
   Conveniences for translating and building error messages.
   """
 
+  use Phoenix.HTML
+
+  
   @doc """
   Translates an error message using gettext.
   """

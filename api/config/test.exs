@@ -17,8 +17,11 @@ config :api, Api.Repo,
 # you can enable the server option below.
 config :api, ApiWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "ahQ/ptDfhhy1RAyF4bD8R1bamuQnYUtvKE4bLNRlepGIcPUKJDBqkyiEwnLBMEDc",
+  secret_key_base: "nrSuYEGB99O+g1knlOCyygDwlC9a59LkHrdCXGhqcfvVU2dbzrroRmz+FBhW1XtY",
   server: false
+
+# In test we don't send emails.
+config :api, Api.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn

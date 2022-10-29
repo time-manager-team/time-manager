@@ -2,9 +2,9 @@ import Config
 
 # Configure your database
 config :api, Api.Repo,
-  url: System.get_env("DATABASE_URL"),
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+url: System.get_env("DATABASE_URL"),
+show_sensitive_data_on_connection_error: true,
+pool_size: 10
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -19,8 +19,11 @@ config :api, ApiWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "vJRPZ7Cu/nFcmVeHmPg6XQHJZLaUtRugIK8a9ixNBSa/6ptDSL7rZArf3oDccbXh",
-  watchers: []
+  secret_key_base: "LtFL4kzR1DyIoVWv16ZgBOXpFh9y60LchQP0oJHFq/ZwyJSqKQq35yuyh9vpdosa",
+  watchers: [
+    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+  ]
 
 # ## SSL Support
 #
@@ -45,6 +48,17 @@ config :api, ApiWeb.Endpoint,
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
 # different ports.
+
+# Watch static and templates for browser reloading.
+config :api, ApiWeb.Endpoint,
+  live_reload: [
+    patterns: [
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/gettext/.*(po)$",
+      ~r"lib/api_web/(live|views)/.*(ex)$",
+      ~r"lib/api_web/templates/.*(eex)$"
+    ]
+  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
