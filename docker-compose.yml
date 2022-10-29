@@ -1,0 +1,42 @@
+version: '3.6'
+services:
+  postgres:
+    image: 'postgres:13.8-alpine'
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      SECRET_KEY_BASE: "WqlfREKbEGjzVjGJfR5TUNnllIe5rmC3HNCppHe6SYDeZ+ZQDERPMomYwi8S4gie"
+    ports:
+      - 5434:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  admin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5555:80"
+    depends_on:
+      - postgres
+
+  api:
+    build: ./api
+    environment:
+      MIX_ENV: prod
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+  
+  front-end:
+    build: ./front-v2
+    ports:
+      - 8080:80
+    volumes:
+      - /app/node_modules
+      - ./front-v2:/app
+    # depends_on:
+    #   - api
