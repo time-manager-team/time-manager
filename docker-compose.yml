@@ -1,52 +1,55 @@
-version: "3"
-
+version: '3.6'
 services:
-
-  db_prod:
+  db_dev:
     image: "postgres:latest"
     environment:
-      - POSTGRES_PASSWORD=j0BXOO5E6nbVlKqHSjxFOv4s5UEhf33xdLrgvLOcBIQeD4DkIOToIVR2U7qhs
-      - POSTGRES_USER=root
-      - POSTGRES_DB=db_prod
-      - PGDATA=/var/lib/postgresql/data/pgdata
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: db_dev
+      POSTGRES_HOST_AUTH_METHOD: trust
     restart: unless-stopped
     volumes:
       - 'pgdata:/var/lib/postgresql/data'
 
-  adminer_prod:
+  admin_dev:
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.org
       PGADMIN_DEFAULT_PASSWORD: admin
     restart: unless-stopped
     ports:
-      - "5556:80"
+      - "5555:80"
     depends_on:
-      - db_prod
+      - db_dev
 
-  api_prod:
+  api_dev:
     build:
       context: "./api"
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - db_dev
+    environment:
+      MIX_ENV: dev
     env_file:
       - ./api/.env
-    restart: unless-stopped
+    ports:
+      - '4000:4000'
     volumes:
       - ./api:/app
-    ports:
-      - '4001:4001'
-    depends_on:
-      - db_prod
-  
-  client_prod:
+
+  client_dev:
     build:
       context: ./client
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     restart: unless-stopped
+    env_file:
+      - ./client/.env.dev
     ports:
-      - "8081:80"
+      - "8080:8080"
+    volumes:
+      - ./client:/app
     depends_on:
-      - api_prod
-
+      - api_dev
 volumes:
   pgdata:
