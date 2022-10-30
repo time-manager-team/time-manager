@@ -1,7 +1,7 @@
 export default {
 
     getAllUsers: async function() {
-        const response = await fetch(`${process.env.VUE_APP_API_URLL}/users`, {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/users`, {
         mode: 'cors',
         headers: {
             "Content-type": "application/json; charset=UTF-8"
@@ -11,7 +11,7 @@ export default {
     },
 
     getOneUser: async function(userId) {
-        const response = await fetch(`${process.env.VUE_APP_API_URLL}/users/${userId}`, {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}`, {
         mode: 'cors',
         headers: {
             "Content-type": "application/json; charset=UTF-8"
@@ -21,7 +21,7 @@ export default {
     },
 
     createUser: async function(user) {
-        const response = await fetch(`${process.env.VUE_APP_API_URLL}/users`, {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/users`, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -33,7 +33,7 @@ export default {
     }, 
 
     updateUser: async function(userId, user) {
-        const response = await fetch(`${process.env.VUE_APP_API_URLL}/users/${userId}`, {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}`, {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -45,7 +45,7 @@ export default {
     },
 
     deleteUser: async function(userId) {
-        const response = await fetch(`${process.env.VUE_APP_API_URLL}/users/${userId}`, {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}`, {
         method: 'DELETE',
         mode: 'cors',
         headers: {
@@ -56,7 +56,7 @@ export default {
     },
     
     getUserByEmailAndUsername: async function(email, username) {
-        const response = await fetch(`${process.env.VUE_APP_API_URLL}/users?email=${email}&username=${username}`, {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/users?email=${email}&username=${username}`, {
         mode: 'cors',
         headers: {
             "Content-type": "application/json; charset=UTF-8"
