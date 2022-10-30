@@ -3,10 +3,9 @@ services:
   postgres:
     image: "postgres:latest"
     environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - 'pgdata:/var/lib/postgresql/data'
 
@@ -23,12 +22,10 @@ services:
 
   api:
     build:
-      dockerfile: Dockerfile
       context: "./api"
+      dockerfile: Dockerfile
     volumes:
       - ./api:/app
-    environment:
-      MIX_ENV: "dev"
     env_file:
       - ./api/.env
     ports:
@@ -37,22 +34,12 @@ services:
       - postgres
   
   nginx:
-    # image: nginx:latest
     build:
       context: ./front-v2
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "8080:80"
-
-  # client:
-  #   stdin_open: true
-  #   build:
-  #     dockerfile: Dockerfile
-  #     context: ./front-v2
-  #   volumes:
-  #     - /app/node_modules
-  #     - ./front-v2:/app
 
 volumes:
   pgdata:
