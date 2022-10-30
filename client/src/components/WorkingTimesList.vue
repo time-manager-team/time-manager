@@ -28,7 +28,7 @@ export default {
         // if (this.$store.state.userConnected.isConnected === true) {
           // const id = this.$store.state.userConnected.id
           const id = 1
-          fetch(process.env.VUE_APP_API_URLL + "/workingtimes" + id, {
+          fetch(process.env.VUE_APP_API_URL + "/workingtimes" + id, {
             mode: 'cors',
             headers: {
               "Content-type": "application/json; charset=UTF-8"

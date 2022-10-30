@@ -174,6 +174,16 @@ $ docker-compose up -d
 
 "-d" flag allow to not get the logs in the terminal
 
+<p>&nbsp;</p>
+
+## <strong>Docker usage for production</strong>
+
+
+### 1. Make migrations after each api production build :  
+```bash
+$ docker-compose exec api bin/api eval "Api.Release.migrate"
+```
+
 
 <p>&nbsp;</p>
 

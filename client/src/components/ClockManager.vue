@@ -26,7 +26,7 @@
         getWorkingTimesUser: function() {
           // if (true === true) {
             // const id = this.$$store.state.userConnected.id
-            fetch(process.env.VUE_APP_API_URLL + "/workingtimes/1", {
+            fetch(process.env.VUE_APP_API_URL + "/workingtimes/1", {
               mode: 'cors',
               headers: {
                 "Content-type": "application/json; charset=UTF-8"
