@@ -1,42 +1,58 @@
-version: '3.6'
+version: "3"
 services:
   postgres:
-    image: 'postgres:13.8-alpine'
+    image: "postgres:latest"
     environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      SECRET_KEY_BASE: "WqlfREKbEGjzVjGJfR5TUNnllIe5rmC3HNCppHe6SYDeZ+ZQDERPMomYwi8S4gie"
-    ports:
-      - 5434:5432
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - 'pgdata:/var/lib/postgresql/data'
 
   admin:
     image: dpage/pgadmin4
+    depends_on:
+      - postgres
+    ports:
+      - "5555:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.org
       PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "5555:80"
-    depends_on:
-      - postgres
+    restart: unless-stopped
 
   api:
-    build: ./api
+    build:
+      dockerfile: Dockerfile
+      context: "./api"
+    volumes:
+      - ./api:/app
     environment:
-      MIX_ENV: prod
+      MIX_ENV: "dev"
     env_file:
-      - .env
+      - ./api/.env
+    ports:
+      - '4000:4000'
     depends_on:
       - postgres
   
-  front-end:
-    build: ./front-v2
+  nginx:
+    # image: nginx:latest
+    build:
+      context: ./front-v2
+      dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
-      - 8080:80
-    volumes:
-      - /app/node_modules
-      - ./front-v2:/app
-    # depends_on:
-    #   - api
+      - "8080:80"
+
+  # client:
+  #   stdin_open: true
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./front-v2
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./front-v2:/app
+
+volumes:
+  pgdata:
