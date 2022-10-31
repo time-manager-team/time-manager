@@ -8,7 +8,7 @@
     data() {
          return {
           // wT: [{
-          //   id: this.$store.state.userConnected.id,
+          //   id: JSON.parse(localStorage.session).id,
           //   isConnected: this.$store.state.userConnected.isConnected
           // }]
           }
@@ -24,7 +24,7 @@
       methods: {
         getWorkingTimesUser: function() {
           // if (this.$store.state.userConnected.isConnected === true) {
-            // const id = this.$store.state.userConnected.id
+            // const id = JSON.parse(localStorage.session).id
             fetch(process.env.VUE_APP_API_URL + "/workingtimes" + 1, {
               mode: 'cors',
               headers: {

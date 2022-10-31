@@ -112,7 +112,7 @@
     methods: {
       startClock: function() {
           var clockid = this.clock.id
-          fetch(import.meta.env.VITE_API_URL + "/clocks/" + clockid, {
+          fetch(process.env.VUE_APP_API_URL + "/clocks/" + clockid, {
           method: 'PUT',
           mode: 'cors',
           headers: {
@@ -127,8 +127,8 @@
         })
       },
       getClock: function() {
-        var userID = this.$store.state.userConnected.id
-        fetch(import.meta.env.VITE_API_URL + "/clocks/" + userID, {
+        var userID = JSON.parse(localStorage.session).id
+        fetch(process.env.VUE_APP_API_URL + "/clocks/" + userID, {
         mode: 'cors',
         headers: {
           "Content-type": "application/json; charset=UTF-8"

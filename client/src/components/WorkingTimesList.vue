@@ -43,13 +43,12 @@
     data() {
       return {
         wT: [{
-          // id: this.$store.state.userConnected.id,
+          // id: JSON.parse(localStorage.session).id,
           // isConnected: this.$store.state.userConnected.isConnected
           id: 1,
           isConnected: ""
         }],
         visible: false,
-        wT:[],
         masks: {
           weekdays: 'WWW',
         },
@@ -67,8 +66,8 @@
     methods: {
       getWorkingTimesUser: function() {
         // if (this.$store.state.userConnected.isConnected === true) {
-          // const id = this.$store.state.userConnected.id
-          var id = this.$store.state.userConnected.id
+          // const id = JSON.parse(localStorage.session).id
+          var id = JSON.parse(localStorage.session).id
           fetch(process.env.VUE_APP_API_URL + "/workingtimes/" + id, {
             mode: 'cors',
             headers: {
@@ -79,42 +78,46 @@
           .then(json => {
             const month = new Date().getMonth();
             const year = new Date().getFullYear();
-            this.wT = json.content
-           // const unixTimeZero = Date.parse(this.wT[0].start);
+
+            if(json.success && json.content && json.content.length > 0) {
+              this.wT = json.content
+              // const unixTimeZero = Date.parse(this.wT[0].start);
            
-           var myObjs = []
-          var cpt = 1;
-           this.wT.forEach(element => {
-            var dateStart = element.start.slice(0, -1);
-            var dateEnd = element.end.slice(0, -1);
-            //date de départ
-            var date = element.start
-            date = date.split('T')
-            var dateYMD = date[0].split('-')
-            var hours = date[1].slice(0,-1);
-            //date de fin
-            var endDate =  element.end
-            endDate = endDate.split('T')
-            var dateYMDend = endDate[0].split('-')
-            var hoursend = endDate[1].slice(0,-1);
-            console.log('startTime :', dateStart)
-            var myobj = {key: cpt,
-              isVisible:false,
-            customData: {
-              id: element.id,
-              title: 'workingTime',
-              class: 'bg-red-600 text-white',
-              startTime: dateStart,
-              endTime: dateEnd,
-              start: hours,
-              end: hoursend
-            },
-            dates: new Date(dateYMD[0], parseInt(dateYMD[1]) - 1, dateYMD[2])
+              var myObjs = []
+              var cpt = 1;
+              this.wT.forEach(element => {
+              var dateStart = element.start.slice(0, -1);
+              var dateEnd = element.end.slice(0, -1);
+              //date de départ
+              var date = element.start
+              date = date.split('T')
+              var dateYMD = date[0].split('-')
+              var hours = date[1].slice(0,-1);
+              //date de fin
+              var endDate =  element.end
+              endDate = endDate.split('T')
+              var dateYMDend = endDate[0].split('-')
+              var hoursend = endDate[1].slice(0,-1);
+              var myobj = {key: cpt,
+                isVisible:false,
+              customData: {
+                id: element.id,
+                title: 'workingTime',
+                class: 'bg-red-600 text-white',
+                startTime: dateStart,
+                endTime: dateEnd,
+                start: hours,
+                end: hoursend
+              },
+              dates: new Date(dateYMD[0], parseInt(dateYMD[1]) - 1, dateYMD[2])
+              }
+              myObjs.push(myobj);
+              cpt++;
+              });
+              this.attributes = myObjs
+            } else {
+              window.alert("No working time for this user")
             }
-            myObjs.push(myobj);
-            cpt++;
-           });
-            this.attributes = myObjs
           })
         // }
       }

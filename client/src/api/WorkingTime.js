@@ -3,7 +3,7 @@ export default {
     getAllWorkingTimesUser: async function(userId, start, end) {
         
         if (start && end) {
-            const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}/working_times?start=${start}&end=${end}`, {
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/workingtimes/${userId}?start=${start}&end=${end}`, {
                 mode: 'cors',
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"
@@ -11,7 +11,7 @@ export default {
             });
             return response.json()
         } else if (start && !end) {
-            const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}/working_times?start=${start}`, {
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/workingtimes/${userId}?start=${start}`, {
                 mode: 'cors',
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"
@@ -19,7 +19,7 @@ export default {
             });
             return response.json()
         } else if (end && !start) {
-            const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}/working_times?end=${end}`, {
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/workingtimes/${userId}?end=${end}`, {
                 mode: 'cors',
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"
@@ -27,7 +27,7 @@ export default {
             });
             return response.json()
         } else {
-            const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}/working_times`, {
+            const response = await fetch(`${process.env.VUE_APP_API_URL}/workingtimes/${userId}`, {
                 mode: 'cors',
                 headers: {
                     "Content-type": "application/json; charset=UTF-8"

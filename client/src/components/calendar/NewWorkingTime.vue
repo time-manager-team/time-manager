@@ -49,7 +49,7 @@
         createWorkingTime: function () {      
           this.starttime =  this.starttime.replaceAll('T', ' ') + ":00Z";
           this.endtime =  this.endtime.replaceAll('T', ' ') + ":00Z";
-          fetch(import.meta.env.VITE_API_URL +"/workingtimes/" + this.$store.state.userConnected.id, {
+          fetch(process.env.VUE_APP_API_URL +"/workingtimes/" + JSON.parse(localStorage.session).id, {
                 mode: 'cors',
                 method: "POST",
                 body: JSON.stringify({
