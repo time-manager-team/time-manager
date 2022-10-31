@@ -19,7 +19,6 @@ defmodule ApiWeb.ClocksController do
   end
 
   def retrieve(conn, params) do
-    clockId = String.to_integer(params["id"])
     userID = params["userID"]
     retrieved = Repo.one(from c in Clocks, where: c.user == ^userID)
     if (retrieved !== nil) do
