@@ -197,7 +197,9 @@ $ docker-compose -f docker-compose-prod.yml -p prod exec api_prod api/bin eval "
 
 ## <strong>Docker usage for dev</strong>
 
-Before dev don't forget to to run npm install -g @vue/cli
+If you got : error sh: 1: vue-cli-service: not found
+Run : rm -rf node_modules package-lock.json && npm install 
+in your local encironment
 
 ### 1. Build no cache dev:  
 ```bash
