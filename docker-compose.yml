@@ -44,7 +44,7 @@ services:
       dockerfile: Dockerfile.dev
     restart: unless-stopped
     env_file:
-      - ./client/.env.dev
+      - ./client/.env
     ports:
       - "8080:8080"
     volumes:

@@ -41,6 +41,8 @@ services:
       context: ./client
       dockerfile: Dockerfile
     restart: unless-stopped
+    env_file:
+      - ./client/.env.prod
     ports:
       - "8081:80"
     depends_on:
