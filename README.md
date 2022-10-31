@@ -179,9 +179,39 @@ $ docker-compose up -d
 ## <strong>Docker usage for production</strong>
 
 
-### 1. Make migrations after each api production build :  
+### 1. Build no cache prod  :  
 ```bash
-$ docker-compose exec api bin/api eval "Api.Release.migrate"
+$ docker-compose -f docker-compose-prod.yml -p prod build --no-cache
+```
+
+### 2. Up prod containers  :  
+```bash
+$ docker-compose -f docker-compose-prod.yml -p prod up -d
+```
+
+### 3. Migrate prod  :  
+```bash
+$ docker-compose -f docker-compose-prod.yml -p prod exec api_prod api/bin eval "Api.Release.migrate"
+```
+<p>&nbsp;</p>
+
+## <strong>Docker usage for dev</strong>
+
+Before dev don't forget to to run npm install -g @vue/cli
+
+### 1. Build no cache dev:  
+```bash
+$ docker-compose -f docker-compose.yml -p dev build --no-cache
+```
+
+### 2. Up dev containers:  
+```bash
+$ docker-compose -f docker-compose.yml -p dev up -d
+```
+
+### 3. Migrate dev:  
+```bash
+$ docker-compose -f docker-compose.yml -p dev exec api_dev mix ecto.migrate
 ```
 
 
