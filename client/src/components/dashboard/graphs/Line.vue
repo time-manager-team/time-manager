@@ -1,17 +1,15 @@
 <template>
-  <div class="row">
-    <div class="col s12">
-      <div class="card">
-        <div class="card-content">
-          <div class="row">
-            <div class="col s12">
-                <span class="card-title"><strong>Year Working time</strong></span>
-                <span class="card-title"><strong>total: {{totalYearWorkTime}} days (7h) </strong></span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s12">
-              <Line v-if="loaded"
+  <div class="card-chart card">
+    <div class="card-chart card-content">
+      <div class="row">
+        <div class="col s12">
+              <h3 class="chart-card-title">Year Working time</h3>
+              <span class="chart-card-info">Total: {{totalYearWorkTime}} days (7h) </span>
+        </div>
+
+      </div>
+      <div class="bar-chart-container">
+        <Line v-if="loaded"
                 :chartOptions="chartOptions"
                 :chartData="chartData"
                 :chartId = "chartId"
@@ -21,9 +19,6 @@
                 :styles = "styles"
                 :plugins = "plugins"
               />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -156,3 +151,34 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+  .card-chart {
+    background-color: var(--bg-4);
+    color: var(--color-2);
+    border-radius: 10px !important;
+    padding: 0px;
+    margin: 5px;
+    .chart-card-title {
+      font-size: 12px;
+      font-weight: 500;
+      margin-top: 5px;
+
+    }
+    .chart-card-info {
+      font-size: 12px;
+      font-weight: 400;
+    }
+    .bar-week-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .bar-chart-container {
+      background-color: white;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+  }
+</style>

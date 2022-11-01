@@ -122,7 +122,6 @@
         .then(response => response.json())
         .then(json => {
           this.clock = json.content
-          console.log(json);
           //this.getClock();
         })
       },

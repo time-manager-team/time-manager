@@ -9,11 +9,13 @@ export default {
     },
     getWeekList: function (list) {
         let weekList = [[],[],[],[],[],[],[]];
+        if(list) {
         for (const element of list) {
             let day = new Date(element.start)
             day = day.getDay()
             weekList[day].push(element)
         }
+    }
         return weekList
     },
     getMonthList: function (list) {
@@ -145,7 +147,7 @@ export default {
         result.setDate(result.getDate() + days);
         result = moment(result).tz(timezone).format()
         result = result.split('T')[0] + " " + result.split('T')[1].slice(0,8)
-        return result;
+        return this.convertLocalToGMT(result, false);
     },
     isSameDate(date1, date2) {
         const x = date1.getDate()
