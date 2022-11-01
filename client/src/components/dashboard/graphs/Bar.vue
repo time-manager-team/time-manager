@@ -117,7 +117,7 @@ export default {
     async show(start, end) {
       const userID=this.$route.params.userID
       const res = await WorkingTime.getAllWorkingTimesUser(userID, start, end)
-      const getWeekWorkTimeResult = tools.getWeekWorkTime(res.data)
+      const getWeekWorkTimeResult = tools.getWeekWorkTime(res.content)
       this.weekWorkingTime = getWeekWorkTimeResult.weekWorkTimeByDay
       this.totalWeekWorkTime = getWeekWorkTimeResult.totalWeekWorkTime
       if (this.totalWeekWorkTime < 35) {
@@ -169,8 +169,8 @@ export default {
 
     try {
       const thisWeekStart = tools.getThisWeekLimits()
-      this.startV=thisWeekStart.start
-      this.endV=thisWeekStart.end
+      this.startV=thisWeekStart.utcStart
+      this.endV=thisWeekStart.utcEnd
       await this.show(this.startV, this.endV)
       this.timer = setInterval(() => {
         this.show(this.startV, this.endV)

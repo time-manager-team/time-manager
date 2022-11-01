@@ -103,7 +103,7 @@
       async showYear(start, end) {
         const userID=this.$route.params.userID
         const res = await WorkingTime.getAllWorkingTimesUser(userID, start, end)
-        const getWorkingTimeByMonth = tools.getWorkingTimeByMonth(res.data)
+        const getWorkingTimeByMonth = tools.getWorkingTimeByMonth(res.content)
         this.graphData = getWorkingTimeByMonth.weekWorkTimeByMonth
         this.totalYearWorkTime = getWorkingTimeByMonth.totalYearTime
         this.year = new Date(start).getFullYear()

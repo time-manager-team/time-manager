@@ -103,7 +103,7 @@
       async show(start, end) {
         const userID=this.$route.params.userID
         const res = await WorkingTime.getAllWorkingTimesUser(userID, start, end)
-        const getDayStatsResult = tools.getDayStats(res.data)
+        const getDayStatsResult = tools.getDayStats(res.content)
         this.break = getDayStatsResult.break
         this.work = getDayStatsResult.work
         this.off = getDayStatsResult.off
@@ -129,8 +129,8 @@
         const todayLimits = tools.getDayLimits()
         this.dayShow = moment(today).tz(tools.timezone).format()
         this.dayShow = this.dayShow.split('T')[0]
-        this.startV = todayLimits.start
-        this.endV = todayLimits.end
+        this.startV = todayLimits.utcStart
+        this.endV = todayLimits.utcEnd
         await this.show(this.startV, this.endV)
         this.timer = setInterval(() => {
           this.show(this.startV, this.endV)
