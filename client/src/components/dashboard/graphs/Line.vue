@@ -71,7 +71,7 @@
       },
       height: {
       type: Number,
-      default: 470
+      default: 200
       },
       cssClasses: {
       default: '',
@@ -151,7 +151,7 @@
         console.error(e)
       }
     },
-    beforeDestroy() {
+    beforeUnmount() {
       clearInterval(this.timer)
     }
   }

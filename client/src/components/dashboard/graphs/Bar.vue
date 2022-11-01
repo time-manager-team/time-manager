@@ -180,8 +180,11 @@ export default {
       console.error(e)
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     clearInterval(this.timer)
   }
 }
 </script>
+
+<style scoped lang="scss">
+</style>

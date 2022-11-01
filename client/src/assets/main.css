@@ -87,3 +87,36 @@
 .navbar-button-disconnect:focus {
 	outline: none;
 }
+/* the scrollbar. */
+::-webkit-scrollbar {
+	width: 10px;
+}
+/* the buttons on the scrollbar (arrows pointing upwards and downwards). */
+::-webkit-scrollbar-button {
+	display: none;
+}
+/* the draggable scrolling handle.  */
+::-webkit-scrollbar-thumb {
+	background: var(--bg-1); 
+	border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-1); 
+  }
+/* the track (progress bar) of the scrollbar. */
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 5px var(--bg-2); 
+	border-radius: 5px;
+}
+/* the track (progress bar) NOT covered by the handle. */
+::-webkit-scrollbar-track-piece {
+	
+}
+/* the bottom corner of the scrollbar, where both horizontal and vertical scrollbars meet. */
+::-webkit-scrollbar-corner {
+	
+}
+/* the draggable resizing handle that appears at the bottom corner of some elements. */
+::-webkit-resizer  {
+	
+}

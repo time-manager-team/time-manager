@@ -104,9 +104,9 @@
         const userID=this.$route.params.userID
         const res = await WorkingTime.getAllWorkingTimesUser(userID, start, end)
         const getDayStatsResult = tools.getDayStats(res.content)
-        this.break = getDayStatsResult.break
-        this.work = getDayStatsResult.work
-        this.off = getDayStatsResult.off
+        this.break = getDayStatsResult.break.toFixed(1)
+        this.work = getDayStatsResult.work.toFixed(1)
+        this.off = getDayStatsResult.off.toFixed(1)
         this.chartData = {
           labels: ['Working', 'Break', 'Off'],
           datasets: [

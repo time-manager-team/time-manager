@@ -59,7 +59,8 @@ export default {
             totalWeekWorkTime = totalWeekWorkTime + weekWorkTimeByDay[i]
         }
         weekWorkTimeByDay[6] = safe
-        totalWeekWorkTime = Math.round((totalWeekWorkTime + safe)*100)/100
+        totalWeekWorkTime = (totalWeekWorkTime + safe).toFixed(1)
+        weekWorkTimeByDay = weekWorkTimeByDay.map(item => item.toFixed(1))
 
         return {weekWorkTimeByDay: weekWorkTimeByDay, totalWeekWorkTime:totalWeekWorkTime}
     },
@@ -135,7 +136,7 @@ export default {
         return ({
             start: start, 
             end: end, 
-            utcStart: utcStart, 
+            utcStart: utcStart,
             utcEnd: utcEnd
         })
     },
@@ -225,7 +226,8 @@ export default {
         for (const element of weekWorkTimeByMonth) {
             totalYearTime = totalYearTime + element
         }
-        totalYearTime = Math.round((totalYearTime)*100)/100
+        totalYearTime = totalYearTime.toFixed(1)
+        weekWorkTimeByMonth = weekWorkTimeByMonth.map(el => el.toFixed(1))
 
         return {weekWorkTimeByMonth: weekWorkTimeByMonth, totalYearTime:totalYearTime}
     },
