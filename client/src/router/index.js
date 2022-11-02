@@ -9,6 +9,8 @@ import All from '../components/dashboard/graphs/All.vue'
 import Bar from '../components/dashboard/graphs/Bar.vue'
 import Line from '../components/dashboard/graphs/Line.vue'
 import Doughnut from '../components/dashboard/graphs/Doughnut.vue'
+import Manager from '../components/Manager.vue'
+import Admin from '../components/Admin.vue'
 
 // Create a new router instance
 const router = createRouter({
@@ -58,19 +60,21 @@ const router = createRouter({
     {
       path: '/users/:userID',
       component: Profile
-    }
+    },
+    {
+      path: '/adminView',
+      component: Admin
+    },{
+      path: '/managerView',
+      component: Manager
+    },
   ]
 })
 
 router.beforeEach(async (to, from) => {
   const userConnected = localStorage.session ? localStorage.session : null
   const isConnected = userConnected ? JSON.parse(userConnected).active : false
-  if (
-    // make sure the user is authenticated
-    !isConnected &&
-    // ❗️ Avoid an infinite redirect
-    to.name !== 'login'
-  ) {
+  if (localStorage.userConnected != undefined && !JSON.parse(localStorage.userConnected).isConnected &&to.name !== 'login') {
     // redirect the user to the login page
     return { name: 'login' }
   } else if(isConnected && to.name === 'login') {

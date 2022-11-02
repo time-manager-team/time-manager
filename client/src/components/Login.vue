@@ -67,7 +67,21 @@
               }
           })
           .then(response => response.json())
-          .then(json => console.log(json));
+          .then(response => {
+            if(response.success) {
+              console.log(response)
+              this.$toast.success('User created !', {
+                  position: "top-right"
+              });
+              this.registerUser(true, response.content.user.id, response.content.user.username, response.content.user.email)
+              router.replace('/home')
+            } else {
+              console.log(response)
+              this.$toast.error(response.error, {
+                position: "top-right"
+              });
+            }
+          });
       },
       getUser: function() {
         fetch(process.env.VUE_APP_API_URL + "/users?username=" + this.user.username + "&email=" + this.user.email, {
@@ -79,8 +93,15 @@
           .then(response => response.json())
           .then(response => {
             if(response.success && response.content.length === 1) {
+              this.$toast.success('Login succes !', {
+                  position: "top-right"
+              });
               this.registerUser(true, response.content[0].id, response.content[0].username, response.content[0].email)
               router.push('/home')
+            } else {
+              this.$toast.error(response.error, {
+                position: "top-right"
+              });
             }
           }
         )
