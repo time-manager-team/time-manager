@@ -16,13 +16,11 @@
 
             </div>
             <div class="modal-footer">
-              <slot name="footer">
-                <button v-on:click="createWorkingTime()">Create</button>
+                <button class="app-button" v-on:click="createWorkingTime()">Create</button>
                 <button
-                  class="modal-default-button"
+                  class="app-button"
                   @click="show = !show"
-                >OK</button>
-              </slot>
+                >Cancel</button>
             </div>
           </div>
         </div>
@@ -71,17 +69,39 @@
   }
     </script>
 
-    <style scoped>
+    <style lang="scss" scoped>
+      .app-button {
+        border: none;
+        border-radius: 10px;
+        padding: 7.5px;
+        background-color: var(--color-1);
+        color: var(--color-2);
+        margin-top: 10px;
+        width: fit-content;
+        height: 25px;
+        font-size: 12px;
+        font-weight: 400;
+        text-align: center;
+        color: white;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        &:hover {
+        filter: brightness(1.25);
+        cursor: pointer;
+        }
+      }
+
     .modal-mask {
-    position: fixed;
-    z-index: 9998;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: table;
-    transition: opacity 0.3s ease;
+      position: fixed;
+      z-index: 9998;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: table;
+      transition: opacity 0.3s ease;
   }
   
   .modal-wrapper {
@@ -93,19 +113,31 @@
     width: 300px;
     margin: 0px auto;
     padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
+    background-color: var(--bg-4);
+    border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
     transition: all 0.3s ease;
   }
   
-  .modal-header h3 {
-    margin-top: 0;
-    color: #42b983;
-  }
-  
   .modal-body {
     margin: 20px 0;
+    label {
+      color: var(--color-2);
+    };
+    input[type="datetime-local"] {
+      color: var(--color-2);
+      font-size: 14px;
+      &::-webkit-calendar-picker-indicator {
+      // background: #ffffff;
+      filter: invert(100%);
+    }
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
   
   .modal-default-button {
