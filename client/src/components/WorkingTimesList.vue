@@ -6,7 +6,7 @@
         <h1 class="menu-title">Working times</h1>
       </div>
     </div>
-    <button @click="visible = !visible" class="app-button">
+    <button @click="openCreateWt('create')" class="app-button">
       <svg viewBox="0 0 457.47 457.469">
         <path d="M228.734,0C102.41,0,0,102.41,0,228.735C0,355.06,102.41,457.469,228.734,457.469
           c126.325,0,228.735-102.409,228.735-228.734C457.47,102.41,355.06,0,228.734,0z M359.268,265.476h-97.326v97.315
@@ -18,7 +18,6 @@
       </svg>
       New working time
     </button>
-    <NewWorkingTime v-if="visible"/>
     <v-calendar
       class="custom-calendar max-w-full"
       :masks="masks"
@@ -38,7 +37,7 @@
               :id="attr.customData.id"
               style="z-index: 0"
             >
-              <p @click="openSelectedWorkingTime(attr)" class="cell">
+              <p @click="openSelectedWorkingTime(attr, 'update')" class="cell">
                 <span class="dot"></span>
                 {{ attr.customData.start }} - {{attr.customData.end}}
               </p>
@@ -63,7 +62,11 @@
           <input type="datetime-local" name="selectedEnd" id="selectedEnd" v-model="selectedEnd" class="mt-1 block w-full rounded-md border border p-2" />
         </div>
         <div class="modal-footer">
-            <button class="app-button" v-on:click="updateWorkingTime()">Update</button>
+            <button class="app-button" v-on:click="mode === 'create' ? createWorkingTime() : updateWorkingTime()">
+              <span v-if="mode === 'create'">Create</span>
+              <span v-else="mode === 'update'">Update</span>
+              <span></span>
+            </button>
             <button class="app-button" @click="this.editVisible = false">Cancel</button>
         </div>
       </div>
@@ -75,14 +78,11 @@
 
 <script>
   import 'v-calendar/dist/style.css';
-  import NewWorkingTime from './calendar/NewWorkingTime.vue'
   
   export default {
     data() {
       return {
         wT: [{
-          // id: JSON.parse(localStorage.session).id,
-          // isConnected: this.$store.state.userConnected.isConnected
           id: 1,
           isConnected: ""
         }],
@@ -92,41 +92,33 @@
         },
         attributes: [
         ],
-        selectedStart: "2000-01-01T00:00",
-        selectedEnd: "2000-01-01T01:00",
+        selectedStart: "2000-01-01T00:00:00",
+        selectedEnd: "2000-01-01T01:00:00",
         editVisible: false,
-        wtId: null
+        wtId: null,
+        mode: null
       }
     },
-    components: {
-      NewWorkingTime
-    },
-    mounted () {
-      this.getWorkingTimesUser();
+    async created () {
+      await this.getWorkingTimesUser();
     },
     methods: {
-      getWorkingTimesUser: function() {
-        // if (this.$store.state.userConnected.isConnected === true) {
-          // const id = JSON.parse(localStorage.session).id
-          var id = JSON.parse(localStorage.session).id
-          fetch(process.env.VUE_APP_API_URL + "/workingtimes/" + id, {
-            mode: 'cors',
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-            }
-          })
-          .then(response => response.json())
-          .then(json => {
-            const month = new Date().getMonth();
-            const year = new Date().getFullYear();
+      getWorkingTimesUser: async function() {
+        var id = JSON.parse(localStorage.session).id
+        const response = await fetch(process.env.VUE_APP_API_URL + "/workingtimes/" + id, {
+          mode: 'cors',
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+        const { content: workingTimes, success: success } = await response.json()
 
-            if(json.success && json.content && json.content.length > 0) {
-              this.wT = json.content
-              // const unixTimeZero = Date.parse(this.wT[0].start);
-           
-              var myObjs = []
-              var cpt = 1;
-              this.wT.forEach(element => {
+        if(success && workingTimes && workingTimes.length > 0) {
+            this.wT = workingTimes
+          
+            var myObjs = []
+            var cpt = 1;
+            this.wT.forEach(element => {
               var dateStart = element.start.slice(0, -1);
               var dateEnd = element.end.slice(0, -1);
               //date de départ
@@ -137,43 +129,71 @@
               //date de fin
               var endDate =  element.end
               endDate = endDate.split('T')
-              var dateYMDend = endDate[0].split('-')
               var hoursend = endDate[1].slice(0,-1);
-              var myobj = {key: cpt,
+              var myobj = {
+                key: cpt,
                 isVisible:false,
-              customData: {
-                id: element.id,
-                title: 'workingTime',
-                class: 'bg-red-600 text-white',
-                startTime: dateStart,
-                endTime: dateEnd,
-                start: hours,
-                end: hoursend
-              },
-              dates: new Date(dateYMD[0], parseInt(dateYMD[1]) - 1, dateYMD[2])
+                customData: {
+                  id: element.id,
+                  title: 'workingTime',
+                  class: 'bg-red-600 text-white',
+                  startTime: dateStart,
+                  endTime: dateEnd,
+                  start: hours,
+                  end: hoursend
+                },
+                dates: new Date(dateYMD[0], parseInt(dateYMD[1]) - 1, dateYMD[2])
               }
-              myObjs.push(myobj);
-              cpt++;
-              });
-              this.attributes = myObjs
-            } else {
-              window.alert("No working time for this user")
-            }
-          })
-        // }
+              myObjs.push(myobj)
+              cpt++
+            })
+            this.attributes = myObjs
+          } else {
+            window.alert("No working time for this user")
+          }
+
+        // .then(response => response.json())
+        // .then(json => {
+        // })
       },
-      openSelectedWorkingTime: function(attr) {
-        console.log(attr)
+      openSelectedWorkingTime: function(attr, mode) {
+        this.mode = mode
         this.editVisible = true
         this.selectedStart = attr.customData.startTime
         this.selectedEnd = attr.customData.endTime
         this.wtId = attr.customData.id
       },
+      openCreateWt: function (mode) {
+        this.mode = mode
+        this.editVisible = true
+        this.selectedStart = null
+        this.selectedEnd = null
+        this.wtId = null
+      },
+      createWorkingTime: async function () {      
+        this.selectedStart = this.selectedStart.split(':').length === 2 ? this.selectedStart + ":00Z" : this.selectedStart + 'Z'
+        this.selectedEnd = this.selectedEnd.split(':').length === 2 ? this.selectedEnd + ":00Z" : this.selectedEnd + 'Z'
+        fetch(process.env.VUE_APP_API_URL +"/workingtimes/" + JSON.parse(localStorage.session).id, {
+            mode: 'cors',
+            method: "POST",
+            body: JSON.stringify({
+              start: this.selectedStart,
+              end: this.selectedEnd
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then(response => response.json())
+        .then(json => {
+          this.editVisible = false;
+        })
+      },
       updateWorkingTime: function () {
         var newSt = this.selectedStart;
-        newSt = newSt + "Z";
+        newSt = newSt.split(':').length === 2 ? newSt + ":00Z" : newSt + 'Z'
         var newEt = this.selectedEnd;
-        newEt = newEt+ "Z";
+        newEt = newEt.split(':').length === 2 ? newEt + ":00Z" : newEt + 'Z'
 
         fetch(process.env.VUE_APP_API_URL +"/workingtimes/" + this.wtId, {          
             mode: 'cors',
@@ -188,15 +208,22 @@
         })
         .then(response => response.json())
         .then(json => {
-          console.log(json)
           this.editVisible = false;
         });
+      }
+    },
+    watch: {
+      async editVisible () {
+        await this.getWorkingTimesUser();
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+  .calendar-container {
+    overflow: auto;
+  }
   .modal-update-wt {
     position: absolute;
     z-index: 10;
@@ -268,12 +295,14 @@
   }
   .cell-container-cell-1 {
     background-color: var(--color-1);
+    color: var(--color-2);
     height: 25px;
     width: 25px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 5px;
   }
   .cell {
     color: var(--color-2);
@@ -281,6 +310,10 @@
     justify-content: center;
     align-items: center;
     font-size: 14px;
+    &:hover {
+      color: var(--color-1);
+      cursor: pointer;
+    }
   }
   .dot {
     background-color: var(--color-1);
@@ -369,6 +402,4 @@
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
-  
 </style>
-
