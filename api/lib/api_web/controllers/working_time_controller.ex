@@ -6,6 +6,7 @@ defmodule ApiWeb.WorkingTimeController do
   alias Api.WorkingTimes
   alias Api.User
   alias Api.Repo
+  alias Api.Member
 
   # conn |> render(ApiWeb.WorkingTimesView, "get_working_time.json", %{status: 0, success: 0, message: "Logger: ", content: is_integer(userID)})
 
@@ -99,6 +100,17 @@ defmodule ApiWeb.WorkingTimeController do
     else
       conn |> render(ApiWeb.ErrorView, "error.json", status: 404, error: "Route not found")
     end
+  end
+
+  def retrieveAllWithTime(conn, params)  do
+    teamID = String.to_integer(params["teamID"])
+    retrieved = Repo.all(from m in Member, join: wt in "workingtimes", on: m.user == wt.user,  where: m.team == ^teamID, select: %{id: wt.id, start: wt.start, end: wt.end, user: wt.user})
+    if (retrieved !== nil) do
+      conn |> render(ApiWeb.WorkingTimesView, "working_time_view.json", %{status: 200, success: true, message: "Working time retrieved for the user", content: retrieved})
+    else
+      conn |> render(ApiWeb.ErrorView, "error.json", status: 404, error: "No workingtime for the team !!!!!")
+    end
+    
   end
 
   def update(conn, params) do

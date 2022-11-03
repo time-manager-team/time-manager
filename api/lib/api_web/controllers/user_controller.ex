@@ -4,6 +4,7 @@ defmodule ApiWeb.UserController do
   import Ecto.Query
 
   alias Api.User
+  alias Api.Roles
   alias Api.Repo
   alias Api.Clocks
 
@@ -55,7 +56,8 @@ defmodule ApiWeb.UserController do
         end
       end
     else
-      retrieved = Repo.all(from u in User, where: u.username >= ^username, where: u.email <= ^email)
+      retrieved = Repo.all(from u in User, join: r in "roles", on: r.id == u.role_id,  where: u.username >= ^username, where: u.email <= ^email, select: %{id: u.id, username: u.username,email: u.email, role_id: u.role_id, role_name: r.role_name, isAuthoriseAdmin: r.isAuthoriseAdmin, isAuthoriseManager: r.isAuthoriseManager})
+      #retrieved = Repo.all(from u in User, where: u.username >= ^username, where: u.email <= ^email)
       if(retrieved !== nil && Enum.count(retrieved) !== 0) do
         conn |> render(ApiWeb.UserView, "user_view.json", %{status: 200, success: true, message: "Users matching the given queries email and username retrieved", content: retrieved})
       else
@@ -64,6 +66,8 @@ defmodule ApiWeb.UserController do
     end
   end
 
+  #@derive {Jason.Encoder, only: [:id, :username, :email, :role_id, ]}
+  #@derive Jason.Encoder
   def retrieve(conn, params) do
     id = params["userID"]
     if(id !== nil) do
@@ -71,9 +75,12 @@ defmodule ApiWeb.UserController do
         if(is_bitstring(id)) do
           id = String.to_integer(id)
         end
-        user = Repo.one(from u in User, where: u.id == ^id)
+        #user = Repo.one(from u in User, join: r in "roles", on: r.id == u.role_id, where: u.id == ^id, select: {u, {r.isAuthoriseAdmin, r.isAuthoriseManager}})
+        user = Repo.one(from u in User, join: r in "roles", on: r.id == u.role_id, where: u.id == ^id, select: %{id: u.id, username: u.username,email: u.email, role_id: u.role_id, role_name: r.role_name, isAuthoriseAdmin: r.isAuthoriseAdmin, isAuthoriseManager: r.isAuthoriseManager})
+
         if(user !== nil) do
-          conn |> render(ApiWeb.UserView, "user_view.json", %{status: 200, success: true, message: "User updated", content: user})
+          #user = JSON.Encoder.encode(%{user_id: user.id, })
+          conn |> render(ApiWeb.UserView, "user_view.json", %{status: 200, success: true, message: "User retrieved", content: user})
         else
           conn |> render(ApiWeb.ErrorView, "error.json", status: 403, error: "No user found")
         end
