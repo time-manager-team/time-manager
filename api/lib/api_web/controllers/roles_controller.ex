@@ -18,4 +18,14 @@ defmodule ApiWeb.RolesController do
       conn |> render(ApiWeb.ErrorView, "error.json", %{status: "403", error: "No Roles Found"})
     end
   end
+
+  def retrievedroits(conn,  %{"roleID" => roleID}) do
+    roleID = String.to_integer(roleID)
+    retrieved = Repo.one(from r in Roles, where: r.id == ^roleID)
+    if (retrieved !== nil && retrieved !== []) do
+      conn |> render(ApiWeb.RolesView, "get_roles.json", %{status: "200", success: true, message: "roles found", content: retrieved})
+    else
+      conn |> render(ApiWeb.ErrorView, "error.json", %{status: "403", error: "No Roles Found"})
+    end
+  end
 end

@@ -30,6 +30,7 @@ defmodule ApiWeb.Router do
     delete "/users/:userID", UserController, :delete
 
     post "/workingtimes/:userID", WorkingTimeController, :create
+    get "/workingtimesTeams/:teamID", WorkingTimeController, :retrieveAllWithTime
     get "/workingtimes/:userID", WorkingTimeController, :retrieveAll
     get "/users/:userID/workingtimes/:id", WorkingTimeController, :retrieve
     put "/workingtimes/:id", WorkingTimeController, :update
@@ -41,6 +42,7 @@ defmodule ApiWeb.Router do
 
     get "/roles",  RolesController, :retrieve
     post "/roles", RolesController, :create
+    get "/roles/:roleID", RolesController, :retrievedroits
 
     get "/teams",  TeamsController, :retrieve
     get "/teams/:userID",  TeamsController, :retrievewithid
@@ -48,5 +50,6 @@ defmodule ApiWeb.Router do
 
     get "/teamMember/:teamID", TeamMemberController, :retrieve
     post "/teamMember/:userID/:teamID", TeamMemberController, :addteammember
+    delete "/teamMember/:userID/:teamID", TeamMemberController, :delete
   end
 end
