@@ -19,7 +19,7 @@
         </svg>
       </div>
       <!-- <RouterLink :to="'/working_times/' + this.$$store.state.userConnected.id"> -->
-      <RouterLink to='/working_times/1'>
+      <RouterLink :to="`/working_times/${this.session.id}`">
         <button class="card-menu-button">Go to</button>
       </RouterLink>
     </div>
@@ -59,9 +59,9 @@
       </RouterLink>
     </div>
 
-    <div class="card-menu">
-      <h2 class="card-menu-title">Profile</h2>
-      <p class="card-menu-description">Update your user informations</p>
+    <div class="card-menu" v-if="session.isAuthoriseAdmin === true">
+      <h2 class="card-menu-title">Admin view</h2>
+      <p class="card-menu-description">Admin view</p>
       <div class="card-menu-icon">
         <svg viewBox="0 0 512 512">
           <g>
@@ -70,10 +70,42 @@
           </g>
         </svg>
       </div>
-      <RouterLink to='/users/1'>
+      <RouterLink to='/adminView'>
         <button class="card-menu-button">Go to</button>
       </RouterLink>
     </div>
+
+    <div class="card-menu" v-if="session.isAuthoriseManager === true">
+      <h2 class="card-menu-title">Manager view</h2>
+      <p class="card-menu-description">Manager view</p>
+      <div class="card-menu-icon">
+        <svg viewBox="0 0 512 512">
+          <g>
+            <path d="m256 121.538c-72.642 0-131.74 59.099-131.74 131.741s59.099 131.739 131.74 131.739 131.74-59.098 131.74-131.739c0-72.642-59.098-131.741-131.74-131.741zm67.469 146.74h-82.469v-82.468h30v52.469h52.469z"/>
+            <path d="m512 219.617h-52.861l-2.744-11.525c-5.04-21.168-13.394-41.321-24.829-59.902l-6.21-10.091 37.392-37.392-51.455-51.454-37.391 37.392-10.091-6.21c-18.58-11.436-38.734-19.789-59.901-24.829l-11.525-2.744v-52.862h-72.768v52.861l-11.525 2.744c-21.167 5.04-41.321 13.394-59.901 24.829l-10.091 6.21-37.391-37.392-51.454 51.454 37.391 37.392-6.21 10.091c-11.436 18.581-19.79 38.735-24.832 59.903l-2.744 11.525h-52.86v72.766h52.86l2.744 11.525c5.041 21.168 13.396 41.322 24.83 59.902l6.21 10.091-37.391 37.391 51.454 51.454 37.391-37.391 10.091 6.21c18.58 11.436 38.734 19.789 59.901 24.829l11.525 2.744v52.862h72.768v-52.861l11.525-2.744c21.167-5.04 41.321-13.394 59.901-24.829l10.091-6.21 37.391 37.392 51.455-51.455-37.392-37.391 6.21-10.091c11.436-18.581 19.789-38.734 24.829-59.902l2.744-11.525h52.863zm-256 195.402c-89.184 0-161.74-72.556-161.74-161.739 0-89.185 72.557-161.741 161.74-161.741s161.74 72.557 161.74 161.741c0 89.183-72.556 161.739-161.74 161.739z"/>
+          </g>
+        </svg>
+      </div>
+      <RouterLink to='/managerView'>
+        <button class="card-menu-button">Go to</button>
+      </RouterLink>
+    </div>
+
+      <div class="card-menu">
+        <h2 class="card-menu-title">Profile</h2>
+        <p class="card-menu-description">Update your user informations</p>
+        <div class="card-menu-icon">
+          <svg viewBox="0 0 512 512">
+            <g>
+              <path d="m256 121.538c-72.642 0-131.74 59.099-131.74 131.741s59.099 131.739 131.74 131.739 131.74-59.098 131.74-131.739c0-72.642-59.098-131.741-131.74-131.741zm67.469 146.74h-82.469v-82.468h30v52.469h52.469z"/>
+              <path d="m512 219.617h-52.861l-2.744-11.525c-5.04-21.168-13.394-41.321-24.829-59.902l-6.21-10.091 37.392-37.392-51.455-51.454-37.391 37.392-10.091-6.21c-18.58-11.436-38.734-19.789-59.901-24.829l-11.525-2.744v-52.862h-72.768v52.861l-11.525 2.744c-21.167 5.04-41.321 13.394-59.901 24.829l-10.091 6.21-37.391-37.392-51.454 51.454 37.391 37.392-6.21 10.091c-11.436 18.581-19.79 38.735-24.832 59.903l-2.744 11.525h-52.86v72.766h52.86l2.744 11.525c5.041 21.168 13.396 41.322 24.83 59.902l6.21 10.091-37.391 37.391 51.454 51.454 37.391-37.391 10.091 6.21c18.58 11.436 38.734 19.789 59.901 24.829l11.525 2.744v52.862h72.768v-52.861l11.525-2.744c21.167-5.04 41.321-13.394 59.901-24.829l10.091-6.21 37.391 37.392 51.455-51.455-37.392-37.391 6.21-10.091c11.436-18.581 19.789-38.734 24.829-59.902l2.744-11.525h52.863zm-256 195.402c-89.184 0-161.74-72.556-161.74-161.739 0-89.185 72.557-161.741 161.74-161.741s161.74 72.557 161.74 161.741c0 89.183-72.556 161.739-161.74 161.739z"/>
+            </g>
+          </svg>
+        </div>
+        <RouterLink to='/users/1'>
+          <button class="card-menu-button">Go to</button>
+        </RouterLink>
+      </div>
     </div>
 </template>
   
@@ -82,11 +114,14 @@
   export default {
     data: function() {
       return {
+        running:true,
         session: {
           active: false,
           id: null,
           username: '',
-          email: ''
+          email: '',
+          isAuthoriseAdmin: false,
+          isAuthoriseManager: false
         },
         clock: {
           id:-1,
@@ -105,12 +140,20 @@
       if (!localStorage.session) {
         localStorage.session = JSON.stringify({
           ...this.session
-        })} else if(this.session.id !== JSON.parse(localStorage.session).id){
+        })
+      } else if(this.session.id !== JSON.parse(localStorage.session).id){
           this.session = JSON.parse(localStorage.session)
       }
+        
       setInterval(() => this.setTime(), 1000)
     },
     methods: {
+      stopT: function() {
+      this.running = false;
+    },
+    startT: function() {
+      this.running = true;
+    },
       startClock: function() {
           var clockid = this.clock.id
           fetch(process.env.VUE_APP_API_URL + "/clocks/" + clockid, {

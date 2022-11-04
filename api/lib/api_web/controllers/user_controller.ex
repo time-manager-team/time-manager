@@ -13,7 +13,7 @@ defmodule ApiWeb.UserController do
   def create(conn, %{ "email" => email, "username" => username } = params) do
     case params |> User.create_user() do
       {:ok, %User{} = user} ->
-        newUser = %{ id: user.id, username: user.username, email: user.email}
+        newUser = %{ id: user.id, username: user.username, email: user.email, role_id: 3}
         user_id = user.id
         Repo.insert(%Clocks{user: user_id})
         conn |> render(ApiWeb.UserView, "user_view.json", %{status: 201, success: true, message: "User created", content: %{user: newUser, user_id: user_id}})

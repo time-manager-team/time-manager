@@ -8,31 +8,78 @@
         Liste des équipes : 
         <div v-for="item in teams" :key="item.id">
             {{ item.team_name }}
-            <div v-for="member in item.members" :key="member.id">
-              {{ member.user }}
-        </div>
-        </div>
-  
-      </div>
-      <div style="background-color: white;">
-        <div class="drop-zone"
-          @drop="onDrop($event, 1)"
-          @dragenter.prevent
-          @dragover.prevent
-        >
-          <div v-for="item in getList(1)" :key="item.title" class="drag-el" draggable="true" @dragstart="startDrag($event, item)">
-            {{ item.title }}
-          </div>
-        </div>
-  
-  
-        <div class="drop-zone" 
-          @drop="onDrop($event, 2)"
-          @dragenter.prevent
-          @dragover.prevent>
-          <div v-for="item in getList(2)" :key="item.title" class="drag-el" draggable="true" @dragstart="startDrag($event, item)">
-            {{ item.title }}
-          </div>
+            <br>
+            <router-link :to="{path: `/chart_managerTeam/${item.id}`}">
+                <button class="app-button">
+                    All
+                </button>
+            </router-link>
+            Membre de l'equipe : 
+            <table style="background-color: white; color:black;">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">
+                      username
+                    </th>
+                    <th  style="text-align: center;">
+                      email
+                    </th>
+                    <th style="text-align: center;"> voir le workingtime </th>
+                    <th  style="text-align: center;">
+                      Voir le dashboard
+                    </th>
+                    <th style="text-align: center;">
+                      Delete from team
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                  v-for="member in item.l1" :key="member.id"
+                  style="border-style: solid;"
+                  >
+                  <td style="text-align: center;">{{ member.username }}</td>
+                  <td style="text-align: center;">{{ member.username }}</td>
+                  <td style="text-align: center;">
+                    <RouterLink :to="'/working_times/' + member.id">
+                      <button class="card-menu-button">Go to</button>
+                    </RouterLink>
+                  </td>
+                  <td style="text-align: center;">
+                    <RouterLink :to="'/chart_manager/' + member.id">
+                      <button class="card-menu-button">Go to</button>
+                    </RouterLink>
+                  </td>
+                  <td  style="text-align: center;"><button @click="deleteInTeam(member.id, item.id)">Delete</button></td>
+                </tr>
+              </tbody>
+            </table>
+            Utilisateurs
+            <table style="background-color: white; color:black;">
+                <thead>
+                  <tr>
+                    <th style="text-align: center;">
+                      username
+                    </th>
+                    <th  style="text-align: center;">
+                      email
+                    </th>
+                    <th style="text-align: center;">
+                      Add in team
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                  v-for="user in item.l2" :key="user.id"
+                  style="border-style: solid;"
+                  >
+                  <td style="text-align: center;">{{ user.username }}</td>
+                  <td style="text-align: center;">{{ user.username }}</td>
+                  <td  style="text-align: center;" @click="addMemberInTeam(user.id, item.id)"><button>Add</button></td>
+                </tr>
+              </tbody>
+            </table>
         </div>
       </div>
      </div>
@@ -43,87 +90,37 @@
                     var bool = false;
                     if (list) {
                       list.forEach(element => {
-                        //element.user = id
                         if (element.user === id) {
                           bool = true;
-                          //console.log('l :', list)
                         }
-                        //console.log("user id :",  element.user)
                       });
                     }
-                    //console.log('bool', bool, "id ", id)
                     return bool;
                   }
   const modUsers = function (teams) {
-    /*
-    teams.forEach(elem => {
-      console.log("el id ",elem.id);
-      console.log("el elem ",elem);
-      console.log("el users ",elem["users"]);
-      console.log("el members ",elem["members"]);
-      if (elem["users"] !== undefined) {
-        elem["users"].forEach(element2 => {
-          var val = isInside(elem["members"], element2.id)
-          var plus = val === true ? 0 : 1;
-          var valtwo = elem.id * 10 + plus
-          element2["list"] = valtwo
-        });
-      }
-    })*/
     var teamCpy = teams
     if (teamCpy["users"] !== undefined) {
       for (var i = 0; i < teamCpy.users.length ; i++) {
         teamCpy.users[i].listssss = teamCpy.id + i;
       }
-      console.log('ok', teamCpy.id, teamCpy)
-      /*
-      teamCpy["users"].forEach(element2 => {
-          var val = isInside(teamCpy["members"], element2.id)
-          var plus = val === true ? 0 : 1;
-          var valtwo = teamCpy.id * 10 + plus
-          //valtwo = 18762
-          console.log("valtwo", valtwo)
-          element2["list"] = valtwo
-          console.log("element 2 : ", element2)
-      });
-      elem["users"].forEach(element2 => {
-          var val = isInside(elem["members"], element2.id)
-          var plus = val === true ? 0 : 1;
-          var valtwo = elem.id * 10 + plus
-          element2["list"] = valtwo
-        });*/
-        console.log("teamCpy : ", teamCpy);
+      // console.log('ok', teamCpy.id, teamCpy)
+      //   console.log("teamCpy : ", teamCpy);
   }
   }
   export default {
     
     data() {
       return {
+        session: {
+          active: false,
+          id: null,
+          username: '',
+          email: ''
+        },
         newteam:"",
         users:[],
         roles:[],
         teams:[],
-        items: [
-          {
-            id: 0,
-            title: 'Item A',
-            list: 1,
-          },
-          {
-            id: 1,
-            title: 'Item B',
-            list: 1,
-          },
-          {
-            id: 2,
-            title: 'Item C',
-            list: 2,
-          },{
-            id: 3,
-            title: 'Item D',
-            list: 2,
-          },
-        ],
       }
     }
     ,
@@ -134,6 +131,7 @@
       watch: {
       },
       mounted () {
+        this.session = JSON.parse(localStorage.session)
         this.getUsers();
         this.getRoles();
         this.getTeams();
@@ -155,7 +153,6 @@
       },
       getUsersList: function(list) {
         var l = this.teams.filter((item) => item.id === list)
-        console.log('L : ' , this.teams);
       },
         getUsers: function() {
               fetch(process.env.VUE_APP_API_URL + "/users" ,{
@@ -183,7 +180,7 @@
             })
         },
         getTeams: function() {
-            fetch(process.env.VUE_APP_API_URL + "/teams/" + this.$store.state.userConnected.id,{
+            fetch(process.env.VUE_APP_API_URL + "/teams/" + this.session.id,{
               mode: 'cors',
               headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -193,8 +190,9 @@
             .then(json => {
               this.teams = json.content
             }).then(() => {
-              this.teams.forEach(element => {
-                fetch(process.env.VUE_APP_API_URL + "/teamMember/" + element.id,{
+              if (this.teams !== [] && this.team !== null) {
+                this.teams.forEach(element => {
+                  fetch(process.env.VUE_APP_API_URL + "/teamMember/" + element.id,{
                   mode: 'cors',
                   headers: {
                     "Content-type": "application/json; charset=UTF-8"
@@ -204,19 +202,75 @@
                 .then(json2 => {
                   element["members"] = json2.content
                   element["users"] = this.users
-                  modUsers(element);
+                  element["l1"] = []
+                  element["l2"] = []
+                  console.log('id team :', element.team_name)
+
+                  if (element["members"] !== undefined) {
+                    element["users"].forEach((elem => {
+                      var ok = false;
+                      for (var i = 0; i < element["members"].length ; i++) {
+                        if (element["members"][i].user === elem.id) {
+                          ok = true;
+                        }
+                      }
+                      if (ok) {
+                        element["l1"].push(elem)
+                      }
+                      else {
+                        element["l2"].push(elem)
+                      }
+                   }))
+                  }
+                    else {
+                      element["l2"] = element["users"];
+                    }
                 })
               })
+            }
             }).then(() => {
+              
+              console.log('teams', this.teams);
+
+              this.teams.forEach((elem => {
+                console.log(elem);
+              }))
+
             })
         },
         addTeam: function () {
-          fetch(process.env.VUE_APP_API_URL + "/teams/"+ this.$store.state.userConnected.id ,{
+          fetch(process.env.VUE_APP_API_URL + "/teams/"+ this.session.id ,{
               method:'POST',
               mode: 'cors',
               body: JSON.stringify({
                 team_name: this.newteam,
                 }),
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            })
+            .then(response => response.json())
+            .then(json => {
+              console.log('response :', json);
+            })
+        },
+        addMemberInTeam: function (user_id, team_id) {
+          fetch(process.env.VUE_APP_API_URL + "/teamMember/"+ user_id + "/" + team_id,{
+              method:'POST',
+              mode: 'cors',
+              headers: {
+                "Content-type": "application/json; charset=UTF-8"
+              }
+            })
+            .then(response => response.json())
+            .then(json => {
+              console.log('response :', json);
+            })
+        },
+        deleteInTeam: function(user_id, team_id) {
+          fetch(process.env.VUE_APP_API_URL + "/teamMember/"+ user_id + "/" + team_id,{
+              method:'DELETE',
+              mode: 'cors',
               headers: {
                 "Content-type": "application/json; charset=UTF-8"
               }

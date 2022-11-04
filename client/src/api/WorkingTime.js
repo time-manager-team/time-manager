@@ -76,6 +76,15 @@ export default {
         }
         });
         return response.json()
+    },
+    retrieveWorkingTimeByTeam: async function(team_id) {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/workingtimesTeams/${team_id}`, {
+            mode: 'cors',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+        return response.json()
     }
 }
 
