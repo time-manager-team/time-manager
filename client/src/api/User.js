@@ -63,6 +63,73 @@ export default {
         }
         });
         return response.json()
-    }
+    },
+
+    getRoles: async function () {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/roles`, {
+            mode: 'cors',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+            return response.json() 
+    },
+
+    getUserTeams: async function (id) {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/teams/${id}`, {
+            mode: 'cors',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+            return response.json() 
+    },
+    getUsersInTeam: async function (teamID) {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/teamMember/${teamID}`, {
+            mode: 'cors',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            });
+            return response.json() 
+    },
+
+    createTeam: async function(userID, newTeam) {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/teams/${userID}`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            },
+            body: JSON.stringify({
+                team_name: newTeam,
+            })
+        });
+        return response.json()
+    }, 
+    addMemberInTeam: async function(userID, teamID) {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/teamMember/${userID}/${teamID}`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        });
+        return response.json()
+    },
+
+    deleteUserInTeam: async function(userID, teamID) {
+        const response = await fetch(`${process.env.VUE_APP_API_URL}/teamMember/${userID, teamID}`, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        });
+        return response.json()
+    }, 
+
+    
+
 }
 

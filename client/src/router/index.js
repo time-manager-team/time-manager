@@ -46,48 +46,53 @@ const router = createRouter({
       children: [
         {
           path: '', 
-          component: All
+          component: All,
         },
         {
           path: 'bar', 
-          component: Bar
+          component: Bar,
         },
         {
           path: 'line', 
-          component: Line
+          component: Line,
         },
         {
           path: 'doughnut', 
-          component: Doughnut
+          component: Doughnut,
         },
       ]
     },
     {
       path: '/chart_managerTeam/:teamID',
+      name: 'chart_managerTeam',
       component: Dashboard,
       children: [
         {
           path: '', 
-          component: All
+          component: All,
         },
         {
           path: 'bar', 
-          component: Bar
+          component: Bar,
+          name: 'bar'
         },
         {
           path: 'line', 
-          component: Line
+          component: Line,
+          name: 'line'
         },
         {
           path: 'doughnut', 
-          component: Doughnut
+          component: Doughnut,
+          name: 'doughnut'
         },
       ]
     }
     ,
     {
       path: '/users/:userID',
-      component: Profile
+      component: Profile,
+      name: 'users/:userID'
     },
     {
       path: '/adminView',
@@ -113,7 +118,12 @@ router.beforeEach(async (to, from) => {
   const isAuthoriseManager = userConnected ? JSON.parse(userConnected).isAuthoriseManager : false
   const userID = userConnected ? parseInt(JSON.parse(userConnected).id) : -1
 
-  if (!isConnected && to.name !== 'login') {
+  console.log('isconnected: ', isConnected)
+  console.log('to ', to);
+  if (isConnected && to.name === 'login') {
+    return {name: 'home'}
+  }
+  else if (!isConnected && to.name !== 'login') {
     return { name: 'login' }
   } else if(isConnected && to.name === 'login') {
     return { name: 'home' }
@@ -134,6 +144,9 @@ router.beforeEach(async (to, from) => {
   else if (isConnected && to.name === 'chart_managerTeam' && isAuthoriseManager !== true) {
     return { name: 'home' }
   }
+  // else if (to.name === undefined) {
+  //   return {name : 'home'}
+  // }
 })
 
 export default router

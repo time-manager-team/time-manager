@@ -94,8 +94,8 @@
       async changeDay() {
         this.dayShow = this.day
         if(this.day) {
-          this.startV = tools.convertLocalToGMT(moment(this.day + "T00:00:00").tz(tools.timezone).format(), false)
-          this.endV = tools.convertLocalToGMT(moment(this.day + "T23:59:59").tz(tools.timezone).format(), false)
+          this.startV = tools.convertLocalToGMT(moment(this.day + "T00:00:00").tz(tools.timezone).format(), false, true)
+          this.endV = tools.convertLocalToGMT(moment(this.day + "T23:59:59").tz(tools.timezone).format(), false, false)
           await this.show(this.startV, this.endV)
         } else {
           window.alert("Please enter a valid date")
@@ -145,6 +145,9 @@
           }
         else {
           const res = await WorkingTime.retrieveWorkingTimeByTeam(teamID, start, end)
+          console.log('time : ',  start, ' end : ', end)
+
+          console.log('res', res);
           if(res.success) {
             const getDayStatsResult = tools.getDayStats(res.content)
             this.break = getDayStatsResult.break.toFixed(1)
