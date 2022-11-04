@@ -141,8 +141,10 @@
         localStorage.session = JSON.stringify({
           ...this.session
         })
-        
+      } else if(this.session.id !== JSON.parse(localStorage.session).id){
+          this.session = JSON.parse(localStorage.session)
       }
+        
       setInterval(() => this.setTime(), 1000)
     },
     methods: {
