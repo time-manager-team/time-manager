@@ -126,8 +126,10 @@
 
       try {
         const thisYearLimits =  tools.getThisYearLimits()
-        this.startV=thisYearLimits.start
-        this.endV=thisYearLimits.end
+        console.log('limit : ', thisYearLimits.startThisYear);
+        console.log('limit2 : ', thisYearLimits.utcStartThisYear);
+        this.startV=thisYearLimits.startThisYear
+        this.endV=thisYearLimits.utcEndThisYear
 
         await this.showYear(this.startV, this.endV)
 
