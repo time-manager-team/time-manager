@@ -42,7 +42,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     env_file:
-      - ./client/.env.prod
+      - ./client/.env.production
     ports:
       - "8081:80"
     depends_on:

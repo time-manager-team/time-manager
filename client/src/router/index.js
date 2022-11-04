@@ -31,10 +31,10 @@ const router = createRouter({
       path: '/working_times/:userID',
       component: WorkingTimesList
     },
-    {
-      path: '/working_time/:userID',
-      component: WorkingTimeUpdate
-    },
+    // {
+    //   path: '/working_time/:userID',
+    //   component: WorkingTimeUpdate
+    // },
     {
       path: '/chart_manager/:userID',
       component: Dashboard,

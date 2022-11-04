@@ -88,7 +88,7 @@
           });
       },
       getUser: function() {
-        fetch(process.env.VUE_APP_API_URL + "/users?username=" + this.user.username + "&email=" + this.user.email, {
+        fetch(process.env.VUE_APP_API_URL + "/login?username=" + this.user.username + "&email=" + this.user.email, {
               mode: 'cors',
               headers: {
                   "Content-type": "application/json; charset=UTF-8"
@@ -97,7 +97,7 @@
           .then(response => response.json())
           .then(response => {
             if(response.success && response.content.length === 1) {
-              this.$toast.success('Login succes !', {
+              this.$toast.success(response.message, {
                   position: "top-right"
               });
                 console.log('reponse : ', response);
