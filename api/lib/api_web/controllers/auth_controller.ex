@@ -19,7 +19,7 @@ defmodule ApiWeb.AuthController do
         conn |> render(ApiWeb.ErrorView, "error.json", %{status: 403, error: "Please provide a email"})
       end
     else
-      retrieved = Repo.all(from u in User, where: u.username >= ^username, where: u.email <= ^email)
+      retrieved = Repo.all(from u in User, join: r in "roles", on: r.id == u.role_id,  where: u.username >= ^username, where: u.email <= ^email, select: %{id: u.id, username: u.username,email: u.email, role_id: u.role_id, role_name: r.role_name, isAuthoriseAdmin: r.isAuthoriseAdmin, isAuthoriseManager: r.isAuthoriseManager})
       if(retrieved !== nil && Enum.count(retrieved) !== 0) do
         conn |> render(ApiWeb.UserView, "user_view.json", %{status: 200, success: true, message: "Welcome back !", content: retrieved})
       else
