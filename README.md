@@ -191,7 +191,7 @@ $ docker-compose -f docker-compose-prod.yml -p prod up -d
 
 ### 3. Migrate prod  :  
 ```bash
-$ docker-compose -f docker-compose-prod.yml -p prod exec api_prod api/bin eval "Api.Release.migrate"
+$ docker-compose -f docker-compose-prod.yml -p prod exec api_prod bin/api eval "Api.Release.migrate"
 ```
 <p>&nbsp;</p>
 

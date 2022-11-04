@@ -67,7 +67,7 @@
               <span v-else="mode === 'update'">Update</span>
               <span></span>
             </button>
-            <button class="app-button" @click="this.editVisible = false">Cancel</button>
+            <button class="app-button" @click="hideModal()">Cancel</button>
         </div>
       </div>
     </div>
@@ -226,6 +226,9 @@
         .then(json => {
           this.editVisible = false;
         });
+      },
+      hideModal: function () {
+        this.editVisible = false
       }
     },
     watch: {

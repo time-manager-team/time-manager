@@ -153,34 +153,79 @@
           this.teams = teams.content;
         //récupération des users des équipes
           this.teams.forEach(async element => {
-          var json2 = await User.getUsersInTeam(element.id);
+            var json2 = await User.getUsersInTeam(element.id);
 
-          element["members"] = json2.content
-          element["users"] = this.users
-          element["l1"] = []
-          element["l2"] = []
-          if (element["members"] !== undefined) {
-            element["users"].forEach((elem => {
-              var ok = false;
-              for (var i = 0; i < element["members"].length ; i++) {
-                if (element["members"][i].user === elem.id) {
-                  ok = true;
+            element["members"] = json2.content
+            element["users"] = this.users
+            element["l1"] = []
+            element["l2"] = []
+            if (element["members"] !== undefined) {
+              element["users"].forEach((elem) => {
+                var ok = false;
+                for (var i = 0; i < element["members"].length ; i++) {
+                  if (element["members"][i].user === elem.id) {
+                    ok = true;
+                  }
                 }
-              }
-              if (ok) {
-                element["l1"].push(elem)
-              }
-              else {
-                element["l2"].push(elem)
-              }
-            }))
-          }
-          else {
-            element["l2"] = element["users"];
-          }
-        })
-        }
-        ,
+                if (ok) {
+                  element["l1"].push(elem)
+                } else {
+                  element["l2"].push(elem)
+                }
+              })
+              .then(response => response.json())
+              .then(json => {
+                this.teams = json.content
+              })
+              .then(() => {
+                if (this.teams !== [] && this.team !== null) {
+                  this.teams.forEach(element => {
+                    fetch(process.env.VUE_APP_API_URL + "/teamMember/" + element.id,{
+                      mode: 'cors',
+                      headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                      }
+                    })
+                    .then(response2 => response2.json())
+                    .then(json2 => {
+                      element["members"] = json2.content
+                      element["users"] = this.users
+                      element["l1"] = []
+                      element["l2"] = []
+                      console.log('id team :', element.team_name)
+
+                      if (element["members"] !== undefined) {
+                        element["users"].forEach((elem => {
+                          var ok = false;
+                          for (var i = 0; i < element["members"].length ; i++) {
+                            if (element["members"][i].user === elem.id) {
+                              ok = true;
+                            }
+                          }
+                          if (ok) {
+                            element["l1"].push(elem)
+                          } else {
+                            element["l2"].push(elem)
+                          }
+                      }
+                    ))
+                      }
+                        else {
+                          element["l2"] = element["users"];
+                        }
+                    })
+                  })
+                }
+              })
+              .then(() => {
+                this.teams.forEach((elem => {
+                  console.log(elem);
+              }))
+
+              })
+            }
+          })
+        },
         addTeam: function () {
           User.createTeam(this.session.id, this.newteam);
           this.getTeams();
