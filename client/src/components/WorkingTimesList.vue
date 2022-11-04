@@ -67,7 +67,9 @@
       getWorkingTimesUser: function() {
         // if (this.$store.state.userConnected.isConnected === true) {
           // const id = JSON.parse(localStorage.session).id
-          var id = JSON.parse(localStorage.session).id
+          //var id = JSON.parse(localStorage.session).id
+          //console.log('', this.$route.params.userID)
+          var id = this.$route.params.userID
           fetch(process.env.VUE_APP_API_URL + "/workingtimes/" + id, {
             mode: 'cors',
             headers: {

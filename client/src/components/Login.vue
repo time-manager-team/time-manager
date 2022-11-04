@@ -35,13 +35,17 @@
         user: {
           username:"",
           id: "",
-          email: ""
+          email: "",
+          isAuthoriseAdmin: false,
+          isAuthoriseManager: false,
         },
         session: {
           active: false,
           id: null,
           username: '',
-          email: ''
+          email: '',
+          isAuthoriseAdmin: false,
+          isAuthoriseManager: false,
         }
       }
     },
@@ -96,9 +100,10 @@
               this.$toast.success('Login succes !', {
                   position: "top-right"
               });
-              this.registerUser(true, response.content[0].id, response.content[0].username, response.content[0].email)
-              router.push('/home')
-            } else {
+                console.log('reponse : ', response);
+                this.registerUser(true, response.content[0].id, response.content[0].username, response.content[0].email, response.content[0].isAuthoriseAdmin, response.content[0].isAuthoriseManager)
+                router.push('/home')
+              } else {
               this.$toast.error(response.error, {
                 position: "top-right"
               });
@@ -106,13 +111,16 @@
           }
         )
       },
-      registerUser: function(active, id, username, email) {
+      registerUser: function(active, id, username, email, isAuthoriseAdmin, isAuthoriseManager) {
         if(this.checkUserInfos(active, id, username, email)) {
           const newSession = {
             active: active,
             id: id,
             username: username,
-            email: email
+            email: email,
+            isAuthoriseAdmin: isAuthoriseAdmin,
+            isAuthoriseManager: isAuthoriseManager,
+            //droits: droits
           }
           this.session = newSession
           localStorage.session = JSON.stringify(newSession)
@@ -121,7 +129,9 @@
             active: false,
             id: null,
             username: '',
-            email: ''
+            email: '',
+            isAuthoriseAdmin: false,
+            isAuthoriseManager: false,
           }
           this.session = newSession
           localStorage.session = JSON.stringify(newSession)

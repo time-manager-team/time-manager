@@ -58,26 +58,62 @@ const router = createRouter({
       ]
     },
     {
+      path: '/chart_managerTeam/:teamID',
+      component: Dashboard,
+      children: [
+        {
+          path: '', 
+          component: All
+        },
+        {
+          path: 'bar', 
+          component: Bar
+        },
+        {
+          path: 'line', 
+          component: Line
+        },
+        {
+          path: 'doughnut', 
+          component: Doughnut
+        },
+      ]
+    }
+    ,
+    {
       path: '/users/:userID',
       component: Profile
     },
     {
       path: '/adminView',
-      component: Admin
+      name: 'adminView',
+      component: Admin,
+      droitsAdmin: true,
+      droitsManager: false,
     },{
       path: '/managerView',
-      component: Manager
+      name: 'managerView',
+      component: Manager,
+      droitsAdmin: true,
+      droitsManager: true,
     },
   ]
 })
 
 router.beforeEach(async (to, from) => {
+
   const userConnected = localStorage.session ? localStorage.session : null
   const isConnected = userConnected ? JSON.parse(userConnected).active : false
-  if (localStorage.userConnected != undefined && !JSON.parse(localStorage.userConnected).isConnected &&to.name !== 'login') {
-    // redirect the user to the login page
+  const isAuthoriseAdmin = userConnected ? JSON.parse(userConnected).isAuthoriseAdmin : false
+  const isAuthoriseManager = userConnected ? JSON.parse(userConnected).isAuthoriseManager : false
+
+  if (!isConnected && to.name !== 'login') {
     return { name: 'login' }
   } else if(isConnected && to.name === 'login') {
+    return { name: 'home' }
+  } else if (isConnected && to.name === 'adminView' && true !== isAuthoriseAdmin) {
+    return { name: 'home' }
+  } else if (isConnected && to.name === 'managerView' && true !== isAuthoriseManager) {
     return { name: 'home' }
   }
 })
