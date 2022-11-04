@@ -23,6 +23,9 @@ defmodule ApiWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", ApiWeb do
     pipe_through :api
+
+    get "/login", AuthController, :login
+
     post "/users", UserController, :create
     get "/users", UserController, :retrieveAll
     get "/users/:userID", UserController, :retrieve
