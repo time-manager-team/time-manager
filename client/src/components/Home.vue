@@ -19,7 +19,7 @@
         </svg>
       </div>
       <!-- <RouterLink :to="'/working_times/' + this.$$store.state.userConnected.id"> -->
-      <RouterLink to='/working_times/1'>
+      <RouterLink :to="`/working_times/${this.session.id}`">
         <button class="card-menu-button">Go to</button>
       </RouterLink>
     </div>
@@ -150,11 +150,15 @@
       if (!localStorage.session) {
         localStorage.session = JSON.stringify({
           ...this.session
-        })} else if(this.session.id !== JSON.parse(localStorage.session).id){
+        })
+        
+      }
+        else if(this.session.id !== JSON.parse(localStorage.session).id){
           const userConnected = localStorage.session ? localStorage.session : null;
           this.session = JSON.parse(localStorage.session)
-          console.log('userConnected ', userConnected)
-      }
+        }
+        const userConnected = localStorage.session ? localStorage.session : null;
+        this.session = JSON.parse(localStorage.session)
     },
     methods: {
       stopT: function() {

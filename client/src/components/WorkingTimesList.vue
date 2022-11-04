@@ -38,7 +38,10 @@
   import 'v-calendar/dist/style.css';
   import CalendarBlock from './calendar/CalendarBlock.vue'
   import NewWorkingTime from './calendar/NewWorkingTime.vue'
-  
+  import WorkingTime from '../api/WorkingTime.js'
+  import router from '../router';
+
+
   export default {
     data() {
       return {
@@ -64,63 +67,69 @@
       this.getWorkingTimesUser();
     },
     methods: {
-      getWorkingTimesUser: function() {
+      async getWorkingTimesUser() {
         // if (this.$store.state.userConnected.isConnected === true) {
           // const id = JSON.parse(localStorage.session).id
           //var id = JSON.parse(localStorage.session).id
           //console.log('', this.$route.params.userID)
-          var id = this.$route.params.userID
-          fetch(process.env.VUE_APP_API_URL + "/workingtimes/" + id, {
-            mode: 'cors',
-            headers: {
-              "Content-type": "application/json; charset=UTF-8"
-            }
-          })
-          .then(response => response.json())
-          .then(json => {
-            const month = new Date().getMonth();
-            const year = new Date().getFullYear();
+          
+          var id = parseInt(this.$route.params.userID)
 
-            if(json.success && json.content && json.content.length > 0) {
-              this.wT = json.content
-              // const unixTimeZero = Date.parse(this.wT[0].start);
-           
+          const userConnected = localStorage.session ? localStorage.session : null
+          const isAuthoriseManager = userConnected ? JSON.parse(userConnected).isAuthoriseManager : false
+          var userConnectedID = userConnected ? JSON.parse(userConnected).id : -1;
+          var is_authorise = false;
+
+          if (userConnectedID !== id && isAuthoriseManager === true) {
+            is_authorise = true;
+          }
+          else if (userConnectedID === id) {
+            is_authorise = true;
+          }
+          if (is_authorise) {
+            const res = await WorkingTime.getAllWorkingTimesUser(id)
+            if(res.success && res.content && res.content.length > 0) {
+              this.wT = res.content
               var myObjs = []
               var cpt = 1;
               this.wT.forEach(element => {
-              var dateStart = element.start.slice(0, -1);
-              var dateEnd = element.end.slice(0, -1);
-              //date de départ
-              var date = element.start
-              date = date.split('T')
-              var dateYMD = date[0].split('-')
-              var hours = date[1].slice(0,-1);
-              //date de fin
-              var endDate =  element.end
-              endDate = endDate.split('T')
-              var dateYMDend = endDate[0].split('-')
-              var hoursend = endDate[1].slice(0,-1);
-              var myobj = {key: cpt,
-                isVisible:false,
-              customData: {
-                id: element.id,
-                title: 'workingTime',
-                class: 'bg-red-600 text-white',
-                startTime: dateStart,
-                endTime: dateEnd,
-                start: hours,
-                end: hoursend
-              },
-              dates: new Date(dateYMD[0], parseInt(dateYMD[1]) - 1, dateYMD[2])
-              }
-              myObjs.push(myobj);
-              cpt++;
+                var dateStart = element.start.slice(0, -1);
+                var dateEnd = element.end.slice(0, -1);
+                //date de départ
+                var date = element.start
+                date = date.split('T')
+                var dateYMD = date[0].split('-')
+                var hours = date[1].slice(0,-1);
+                //date de fin
+                var endDate =  element.end
+                endDate = endDate.split('T')
+                var dateYMDend = endDate[0].split('-')
+                var hoursend = endDate[1].slice(0,-1);
+                var myobj = {
+                  key: cpt,
+                  isVisible:false,
+                  customData: {
+                    id: element.id,
+                    title: 'workingTime',
+                    class: 'bg-red-600 text-white',
+                    startTime: dateStart,
+                    endTime: dateEnd,
+                    start: hours,
+                    end: hoursend
+                  },
+                  dates: new Date(dateYMD[0], parseInt(dateYMD[1]) - 1, dateYMD[2])
+                  }
+                myObjs.push(myobj);
+                cpt++;
               });
-              this.attributes = myObjs
+                this.attributes = myObjs
             } else {
               window.alert("No working time for this user")
             }
-          })
+      } else {
+        this.$toast.error("Access not autorized !", {position: "top-right"});
+        router.replace('/home')
+      }
         // }
       }
     }
