@@ -77,7 +77,7 @@ export default {
         });
         return response.json()
     },
-    retrieveWorkingTimeByTeam: async function(team_id) {
+    retrieveWorkingTimeByTeam: async function(team_id, start, end) {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/workingtimesTeams/${team_id}`, {
             mode: 'cors',
             headers: {

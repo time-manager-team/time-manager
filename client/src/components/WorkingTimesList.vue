@@ -107,7 +107,7 @@
     },
     methods: {
       getWorkingTimesUser: async function() {
-        var id = JSON.parse(localStorage.session).id
+          const id = parseInt(this.$route.params.userID)  
 
           const userConnected = localStorage.session ? localStorage.session : null
           const isAuthoriseManager = userConnected ? JSON.parse(userConnected).isAuthoriseManager : false
@@ -118,6 +118,7 @@
             is_authorise = true;
           }
           else if (userConnectedID === id) {
+            
             is_authorise = true;
           }
           if (is_authorise) {
@@ -131,7 +132,6 @@
 
             if(success && workingTimes && workingTimes.length > 0) {
                 this.wT = workingTimes
-              
                 var myObjs = []
                 var cpt = 1;
                 this.wT.forEach(element => {
