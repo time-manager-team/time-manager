@@ -238,7 +238,7 @@
         .login-form-button-connect {
           border: none;
           padding: 5px;
-          background-color: var(--color-3);
+          background-color: var(--color-4);
           border-radius: 10px;
           color: var(--color-2);
           margin-bottom: 20px;

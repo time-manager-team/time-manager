@@ -229,9 +229,6 @@
               })
             }
             }).then(() => {
-              
-              console.log('teams', this.teams);
-
               this.teams.forEach((elem => {
                 console.log(elem);
               }))

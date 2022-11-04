@@ -138,7 +138,11 @@
         .navbar-menu-item {
           svg {
             width: 26px;
-            fill: var(--color-2)
+            fill: var(--color-2);
+            transition: transform .2s; /* Animation */
+            &:hover {
+              transform: scale(1.5);
+            }
           }
         }
       }
@@ -152,7 +156,14 @@
       margin-bottom: 30px;
       svg {
         width: 24px;
-        fill: var(--color-2)
+        fill: var(--color-2);
+        transition: transform .2s; /* Animation */
+          &:hover {
+            transform: scale(1.5);
+          }
+      }
+      &:hover {
+        cursor: pointer;
       }
     }
   }
