@@ -10,10 +10,10 @@ defmodule ApiWeb.UserController do
 
   # conn |> render(ApiWeb.WorkingTimesView, "get_working_time.json", %{status: 0, success: 0, message: "Logger: ", content: is_integer(userID)})
 
-  def create(conn, %{ "email" => email, "username" => username } = params) do
-    case params |> User.create_user() do
+  def create(conn, %{ "email" => email, "username" => username }) do
+    case %{ "email" => email, "username" => username, "role_id" => 1 } |> User.create_user() do
       {:ok, %User{} = user} ->
-        newUser = %{ id: user.id, username: user.username, email: user.email, role_id: 3}
+        newUser = %{ id: user.id, username: user.username, email: user.email, role_id: 1}
         user_id = user.id
         Repo.insert(%Clocks{user: user_id})
         conn |> render(ApiWeb.UserView, "user_view.json", %{status: 201, success: true, message: "User created", content: %{user: newUser, user_id: user_id}})
