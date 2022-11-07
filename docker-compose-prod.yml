@@ -10,7 +10,8 @@ services:
     restart: unless-stopped
     volumes:
       - 'pgdataprod:/var/lib/postgresql/data'
-
+      - './bdd/init.sql:/docker-entrypoint-initdb.d/init.sql'
+  
   adminer_prod:
     image: dpage/pgadmin4
     environment:
