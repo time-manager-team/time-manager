@@ -14,19 +14,22 @@ defmodule ApiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug ApiWeb.JWTAuthPlug
+  end
+
   scope "/", ApiWeb do
     pipe_through :browser
 
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
   scope "/api", ApiWeb do
-    pipe_through :api
+    pipe_through :auth
 
-    get "/login", AuthController, :login
+    get "/", AuthController, :get
+    delete "/logout", AuthController, :delete
 
-    post "/users", UserController, :create
     get "/users", UserController, :retrieveAll
     get "/users/:userID", UserController, :retrieve
     put "/users/:userID", UserController, :update
@@ -43,10 +46,6 @@ defmodule ApiWeb.Router do
     put "/clocks/:id", ClocksController, :update
     get "/clocks/:userID", ClocksController, :retrieve
 
-    get "/roles",  RolesController, :retrieve
-    post "/roles", RolesController, :create
-    get "/roles/:roleID", RolesController, :retrievedroits
-
     get "/teams",  TeamsController, :retrieve
     get "/teams/:userID",  TeamsController, :retrievewithid
     post "/teams/:userID", TeamsController, :create
@@ -54,5 +53,13 @@ defmodule ApiWeb.Router do
     get "/teamMember/:teamID", TeamMemberController, :retrieve
     post "/teamMember/:userID/:teamID", TeamMemberController, :addteammember
     delete "/teamMember/:userID/:teamID", TeamMemberController, :delete
+  end
+
+  # Other scopes may use custom stacks.
+  scope "/api/auth", ApiWeb do
+    pipe_through :api
+
+    post "/register", AuthController, :register
+    post "/login", AuthController, :login
   end
 end
