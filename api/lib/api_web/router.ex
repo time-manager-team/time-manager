@@ -27,7 +27,6 @@ defmodule ApiWeb.Router do
   scope "/api", ApiWeb do
     pipe_through :auth
 
-    get "/", AuthController, :get
     delete "/logout", AuthController, :delete
 
     get "/users", UserController, :retrieveAll
@@ -45,6 +44,10 @@ defmodule ApiWeb.Router do
     post "/clocks", ClocksController, :create
     put "/clocks/:id", ClocksController, :update
     get "/clocks/:userID", ClocksController, :retrieve
+
+    get "/roles",  RolesController, :retrieve
+    post "/roles", RolesController, :create
+    get "/roles/:roleID", RolesController, :retrievedroits
 
     get "/teams",  TeamsController, :retrieve
     get "/teams/:userID",  TeamsController, :retrievewithid

@@ -4,7 +4,8 @@ export default {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/users`, {
         mode: 'cors',
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": JSON.parse(localStorage.session).token
         }
         });
         return response.json()
@@ -14,7 +15,8 @@ export default {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/users/${userId}`, {
         mode: 'cors',
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": JSON.parse(localStorage.session).token
         }
         });
         return response.json()
@@ -25,7 +27,8 @@ export default {
         method: 'POST',
         mode: 'cors',
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": JSON.parse(localStorage.session).token
         },
         body: JSON.stringify(user)
         });
@@ -37,7 +40,8 @@ export default {
         method: 'PUT',
         mode: 'cors',
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": JSON.parse(localStorage.session).token
         },
         body: JSON.stringify(user)
         });
@@ -49,7 +53,8 @@ export default {
         method: 'DELETE',
         mode: 'cors',
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": JSON.parse(localStorage.session).token
         }
         });
         return response.json()
@@ -59,7 +64,8 @@ export default {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/users?email=${email}&username=${username}`, {
         mode: 'cors',
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": JSON.parse(localStorage.session).token
         }
         });
         return response.json()
@@ -69,7 +75,8 @@ export default {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/roles`, {
             mode: 'cors',
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
             }
             });
             return response.json() 
@@ -79,7 +86,8 @@ export default {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/teams/${id}`, {
             mode: 'cors',
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
             }
             });
             return response.json() 
@@ -88,7 +96,8 @@ export default {
         const response = await fetch(`${process.env.VUE_APP_API_URL}/teamMember/${teamID}`, {
             mode: 'cors',
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
             }
             });
             return response.json() 
@@ -99,7 +108,8 @@ export default {
             method: 'POST',
             mode: 'cors',
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
             },
             body: JSON.stringify({
                 team_name: newTeam,
@@ -112,7 +122,8 @@ export default {
             method: 'POST',
             mode: 'cors',
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
             }
         });
         return response.json()
@@ -123,7 +134,8 @@ export default {
         method: 'DELETE',
         mode: 'cors',
         headers: {
-            "Content-type": "application/json; charset=UTF-8"
+            "Content-type": "application/json; charset=UTF-8",
+            "Authorization": JSON.parse(localStorage.session).token
         }
         });
         return response.json()

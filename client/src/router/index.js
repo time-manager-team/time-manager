@@ -118,8 +118,6 @@ router.beforeEach(async (to, from) => {
   const isAuthoriseManager = userConnected ? JSON.parse(userConnected).isAuthoriseManager : false
   const userID = userConnected ? parseInt(JSON.parse(userConnected).id) : -1
 
-  console.log('isconnected: ', isConnected)
-  console.log('to ', to);
   if (isConnected && to.name === 'login') {
     return {name: 'home'}
   }

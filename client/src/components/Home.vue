@@ -121,7 +121,8 @@
           username: '',
           email: '',
           isAuthoriseAdmin: false,
-          isAuthoriseManager: false
+          isAuthoriseManager: false,
+          token: ''
         },
         clock: {
           id:-1,
@@ -136,7 +137,6 @@
       }
     },
     mounted () {
-      this.getClock();
       if (!localStorage.session) {
         localStorage.session = JSON.stringify({
           ...this.session
@@ -144,7 +144,8 @@
       } else if(this.session.id !== JSON.parse(localStorage.session).id){
           this.session = JSON.parse(localStorage.session)
       }
-        
+
+      this.getClock();
       setInterval(() => this.setTime(), 1000)
     },
     methods: {
@@ -154,46 +155,47 @@
     startT: function() {
       this.running = true;
     },
-      startClock: function() {
-          var clockid = this.clock.id
-          fetch(process.env.VUE_APP_API_URL + "/clocks/" + clockid, {
-          method: 'PUT',
-          mode: 'cors',
-          headers: {
-            "Content-type": "application/json; charset=UTF-8"
-          }
-        })
-        .then(response => response.json())
-        .then(json => {
-          this.clock = json.content
-          //this.getClock();
-        })
-      },
-      getClock: function() {
-        var userID = JSON.parse(localStorage.session).id
-        fetch(process.env.VUE_APP_API_URL + "/clocks/" + userID, {
+    startClock: function() {
+      var clockid = this.clock.id
+      fetch(process.env.VUE_APP_API_URL + "/clocks/" + clockid, {
+        method: 'PUT',
         mode: 'cors',
         headers: {
-          "Content-type": "application/json; charset=UTF-8"
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": this.session.token
         }
-      })
-      .then(response => response.json())
-      .then(json => {
-        this.clock = json.content
-      })
-      },
-      setTime() {
-        const date = new Date();
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let seconds = date.getSeconds();
-        hours = hours <= 9 ? `${hours}`.padStart(2, 0) : hours;
-        minutes = minutes <= 9 ? `${minutes}`.padStart(2, 0) : minutes;
-        seconds = seconds <= 9 ? `${seconds}`.padStart(2, 0) : seconds;
-        this.hours = hours;
-        this.minutes = minutes;
-        this.seconds = seconds;
+    })
+    .then(response => response.json())
+    .then(json => {
+      this.clock = json.content
+    })
+    },
+    getClock: function() {
+      var userID = JSON.parse(localStorage.session).id
+      fetch(process.env.VUE_APP_API_URL + "/clocks/" + userID, {
+      mode: 'cors',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": this.session.token
       }
+    })
+    .then(response => response.json())
+    .then(json => {
+      this.clock = json.content
+    })
+    },
+    setTime() {
+      const date = new Date();
+      let hours = date.getHours();
+      let minutes = date.getMinutes();
+      let seconds = date.getSeconds();
+      hours = hours <= 9 ? `${hours}`.padStart(2, 0) : hours;
+      minutes = minutes <= 9 ? `${minutes}`.padStart(2, 0) : minutes;
+      seconds = seconds <= 9 ? `${seconds}`.padStart(2, 0) : seconds;
+      this.hours = hours;
+      this.minutes = minutes;
+      this.seconds = seconds;
+    }
     }
   }
 </script>
