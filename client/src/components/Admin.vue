@@ -109,7 +109,8 @@
               fetch(process.env.VUE_APP_API_URL + "/users" ,{
               mode: 'cors',
               headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
               }
             })
             .then(response => response.json())
@@ -123,7 +124,8 @@
             fetch(process.env.VUE_APP_API_URL + "/roles" ,{
               mode: 'cors',
               headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
               }
             })
             .then(response => response.json())
@@ -140,7 +142,8 @@
                 role_name:this.newrole
                 }),
               headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
               }
             })
             .then(response => response.json())
@@ -157,7 +160,8 @@
                 role_id: roles.role_id
                 }),
               headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
               }
             })
             .then(response => response.json())

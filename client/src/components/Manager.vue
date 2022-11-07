@@ -183,7 +183,8 @@
                     fetch(process.env.VUE_APP_API_URL + "/teamMember/" + element.id,{
                       mode: 'cors',
                       headers: {
-                        "Content-type": "application/json; charset=UTF-8"
+                        "Content-type": "application/json; charset=UTF-8",
+                        "Authorization": JSON.parse(localStorage.session).token
                       }
                     })
                     .then(response2 => response2.json())
