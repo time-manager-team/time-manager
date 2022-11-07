@@ -151,7 +151,6 @@
         getTeams: async function () {
           var teams = await User.getUserTeams(this.session.id)
           this.teams = teams.content;
-        //récupération des users des équipes
           this.teams.forEach(async element => {
             var json2 = await User.getUsersInTeam(element.id);
 
@@ -193,7 +192,6 @@
                       element["users"] = this.users
                       element["l1"] = []
                       element["l2"] = []
-                      console.log('id team :', element.team_name)
 
                       if (element["members"] !== undefined) {
                         element["users"].forEach((elem => {
@@ -218,12 +216,10 @@
                   })
                 }
               })
-              .then(() => {
-                this.teams.forEach((elem => {
-                  console.log(elem);
-              }))
-
-              })
+              // .then(() => {
+              //   this.teams.forEach((elem => {
+              //     console.log(elem);
+              // }))})
             }
           })
         },

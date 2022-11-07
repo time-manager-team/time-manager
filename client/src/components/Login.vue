@@ -110,7 +110,6 @@
               this.$toast.success(response.message, {
                   position: "top-right"
               });
-                console.log(response)
                 this.registerUser(true, response.user.id, response.user.username, response.user.email, response.user.isAuthoriseAdmin, response.user.isAuthoriseManager, response.token)
                 router.push('/home')
               } else {
