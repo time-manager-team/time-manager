@@ -145,9 +145,7 @@
           }
         else {
           const res = await WorkingTime.retrieveWorkingTimeByTeam(teamID, start, end)
-          console.log('time : ',  start, ' end : ', end)
 
-          console.log('res', res);
           if(res.success) {
             const getDayStatsResult = tools.getDayStats(res.content)
             this.break = getDayStatsResult.break.toFixed(1)

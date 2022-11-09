@@ -42,7 +42,8 @@
                 {
                     mode: 'cors',
                     headers: {
-                        "Content-type": "application/json; charset=UTF-8"
+                        "Content-type": "application/json; charset=UTF-8",
+                        "Authorization": JSON.parse(localStorage.session).token
                     }
                 }
             )
@@ -64,7 +65,8 @@
                 {
                     mode: 'cors',
                     headers: {
-                        "Content-type": "application/json; charset=UTF-8"
+                        "Content-type": "application/json; charset=UTF-8",
+                        "Authorization": JSON.parse(localStorage.session).token
                     },
                     method: "PUT",
                     body: JSON.stringify({

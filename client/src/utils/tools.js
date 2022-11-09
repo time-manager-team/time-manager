@@ -4,7 +4,6 @@ const timezone = 'Europe/Amsterdam'
 
 export default {
     convertLocalToGMT: function (uctLocalDate, withMicro, stoe) {
-        console.log('iso : ', uctLocalDate);
         var isoDate;
         if (stoe === true) {
             isoDate = new Date(uctLocalDate)
@@ -20,9 +19,7 @@ export default {
         else {
             var isoDate = new Date()
             isoDate = new Date(uctLocalDate).toISOString();
-            console.log('isoDate undefined  :', isoDate)
         }
-        console.log('isoDate  :', isoDate, stoe)
         
         return withMicro ? isoDate.toString() : isoDate.toString().replace('.' + isoDate.toString().split('.')[1], 'Z')
     },
@@ -150,8 +147,6 @@ export default {
         start = start.split('T')[0] + " " + start.split('T')[1].slice(0,8)
         end = end.split('T')[0] + " " + end.split('T')[1].slice(0,8)
 
-        console.log('start :', utcStart);
-        console.log('end :', utcEnd);
         return ({
             start: start, 
             end: end, 

@@ -125,7 +125,8 @@
             const response = await fetch(process.env.VUE_APP_API_URL + "/workingtimes/" + id, {
               mode: 'cors',
               headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
               }
             })
             const { content: workingTimes, success: success } = await response.json()
@@ -197,7 +198,8 @@
               end: this.selectedEnd
             }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
             }
         })
         .then(response => response.json())
@@ -219,7 +221,8 @@
               end: newEt
             }),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": JSON.parse(localStorage.session).token
             }
         })
         .then(response => response.json())

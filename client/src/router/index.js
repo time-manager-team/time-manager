@@ -47,29 +47,7 @@ const router = createRouter({
         {
           path: '', 
           component: All,
-        },
-        {
-          path: 'bar', 
-          component: Bar,
-        },
-        {
-          path: 'line', 
-          component: Line,
-        },
-        {
-          path: 'doughnut', 
-          component: Doughnut,
-        },
-      ]
-    },
-    {
-      path: '/chart_managerTeam/:teamID',
-      name: 'chart_managerTeam',
-      component: Dashboard,
-      children: [
-        {
-          path: '', 
-          component: All,
+          name: 'all'
         },
         {
           path: 'bar', 
@@ -85,6 +63,33 @@ const router = createRouter({
           path: 'doughnut', 
           component: Doughnut,
           name: 'doughnut'
+        },
+      ]
+    },
+    {
+      path: '/chart_managerTeam/:teamID',
+      name: 'chart_managerTeam',
+      component: Dashboard,
+      children: [
+        {
+          path: '', 
+          component: All,
+          name: 'allTeam'
+        },
+        {
+          path: 'bar', 
+          component: Bar,
+          name: 'barTeam'
+        },
+        {
+          path: 'line', 
+          component: Line,
+          name: 'lineTeam'
+        },
+        {
+          path: 'doughnut', 
+          component: Doughnut,
+          name: 'doughnutTeam'
         },
       ]
     }
@@ -118,8 +123,6 @@ router.beforeEach(async (to, from) => {
   const isAuthoriseManager = userConnected ? JSON.parse(userConnected).isAuthoriseManager : false
   const userID = userConnected ? parseInt(JSON.parse(userConnected).id) : -1
 
-  console.log('isconnected: ', isConnected)
-  console.log('to ', to);
   if (isConnected && to.name === 'login') {
     return {name: 'home'}
   }

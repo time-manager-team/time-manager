@@ -151,7 +151,6 @@
         getTeams: async function () {
           var teams = await User.getUserTeams(this.session.id)
           this.teams = teams.content;
-        //récupération des users des équipes
           this.teams.forEach(async element => {
             var json2 = await User.getUsersInTeam(element.id);
 
@@ -183,7 +182,8 @@
                     fetch(process.env.VUE_APP_API_URL + "/teamMember/" + element.id,{
                       mode: 'cors',
                       headers: {
-                        "Content-type": "application/json; charset=UTF-8"
+                        "Content-type": "application/json; charset=UTF-8",
+                        "Authorization": JSON.parse(localStorage.session).token
                       }
                     })
                     .then(response2 => response2.json())
@@ -192,7 +192,6 @@
                       element["users"] = this.users
                       element["l1"] = []
                       element["l2"] = []
-                      console.log('id team :', element.team_name)
 
                       if (element["members"] !== undefined) {
                         element["users"].forEach((elem => {
@@ -217,12 +216,10 @@
                   })
                 }
               })
-              .then(() => {
-                this.teams.forEach((elem => {
-                  console.log(elem);
-              }))
-
-              })
+              // .then(() => {
+              //   this.teams.forEach((elem => {
+              //     console.log(elem);
+              // }))})
             }
           })
         },

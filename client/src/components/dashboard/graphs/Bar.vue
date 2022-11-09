@@ -132,7 +132,6 @@ export default {
       const userID = this.$route.params.userID
       const teamID = this.$route.params.teamID
 
-      console.log('user id : ', this.$route.params.userID)
       if (userID !== undefined) {
         const res = await WorkingTime.getAllWorkingTimesUser(userID, start, end)
         const getWeekWorkTimeResult = tools.getWeekWorkTime(res.content)
